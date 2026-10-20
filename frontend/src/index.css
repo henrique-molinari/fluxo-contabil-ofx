@@ -1,0 +1,310 @@
+/* index.css
+   Estilo do meu ERP. Refiz o visual: menu escuro, fundo claro, cards limpos e
+   fonte Plus Jakarta Sans. Continuo na paleta verde do site de referência.
+   Usei variáveis (--nome) nas cores pra poder mudar tudo num lugar só. */
+
+:root {
+  --menu: #0a2b2e;            /* verde bem escuro do menu lateral */
+  --menu-claro: #12403f;
+  --primario: #00795f;        /* verde dos botões */
+  --primario-escuro: #005e4a;
+  --destaque: #00e394;        /* verde vivo (detalhes) */
+  --petroleo: #0b3d44;
+  --fundo: #f4f7f6;
+  --branco: #ffffff;
+  --borda: #e3ebe8;
+  --texto: #14292b;
+  --cinza: #667a77;
+  --verde-suave: #e5f6ef;     /* fundo de selos e ícones */
+  --vermelho: #b42318;        /* só em erro e botão de apagar */
+  --sombra: 0 1px 2px rgba(16, 42, 40, 0.05), 0 4px 16px rgba(16, 42, 40, 0.04);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif;
+  background: var(--fundo);
+  color: var(--texto);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, p { margin: 0; }
+
+/* Números alinhados (todos os dígitos com a mesma largura) */
+.num, .kpi-valor, .centro-rosca b { font-variant-numeric: tabular-nums; }
+
+/* ---------- Layout geral: menu na esquerda e conteúdo na direita ---------- */
+.layout { display: flex; min-height: 100vh; }
+
+.menu {
+  width: 264px; flex-shrink: 0;
+  background: var(--menu); color: #cfe3de;
+  display: flex; flex-direction: column;
+  padding: 24px 16px;
+  position: sticky; top: 0; height: 100vh;
+}
+.marca { display: flex; gap: 12px; align-items: center; padding: 0 8px 26px; }
+.marca strong { display: block; color: white; font-size: 1.05rem; letter-spacing: -0.01em; }
+.marca small { color: #7fb5a8; font-size: 0.75rem; }
+.marca-icone {
+  width: 40px; height: 40px; border-radius: 12px;
+  background: var(--destaque); color: var(--menu);
+  display: grid; place-items: center;
+}
+
+.grupo-menu {
+  font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+  color: #6f9c92; padding: 18px 12px 8px;
+}
+.item {
+  display: flex; align-items: center; gap: 12px; width: 100%;
+  background: none; border: 0; color: #b9d3cc;
+  padding: 11px 12px; border-radius: 10px; margin-bottom: 2px;
+  font: inherit; font-size: 0.92rem; font-weight: 500; text-align: left; cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.item:hover { background: var(--menu-claro); color: white; }
+.item.ativo { background: var(--menu-claro); color: white; font-weight: 700; box-shadow: inset 3px 0 0 var(--destaque); }
+.item.ativo svg { color: var(--destaque); }
+
+.rodape-menu {
+  margin-top: auto; padding: 12px; border-radius: 10px; background: var(--menu-claro);
+  font-size: 0.78rem; color: #9cc4ba; display: flex; align-items: center; gap: 10px;
+}
+.ponto { width: 8px; height: 8px; border-radius: 50%; background: var(--destaque); box-shadow: 0 0 0 4px rgba(0, 227, 148, 0.18); }
+
+.conteudo { flex: 1; padding: 32px 40px 48px; min-width: 0; max-width: 1400px; }
+.topo { margin-bottom: 26px; }
+.trilha { font-size: 0.78rem; color: var(--cinza); font-weight: 600; margin-bottom: 6px; }
+.topo h1 { font-size: 1.85rem; letter-spacing: -0.025em; font-weight: 800; }
+.topo p { margin-top: 4px; color: var(--cinza); }
+
+/* ---------- Cards de indicadores (KPI) ---------- */
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 20px; }
+.kpi {
+  background: var(--branco); border: 1px solid var(--borda); border-radius: 16px;
+  padding: 20px; display: flex; flex-direction: column; box-shadow: var(--sombra);
+}
+.kpi-icone {
+  width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; margin-bottom: 16px;
+}
+.kpi-icone.verde { background: var(--verde-suave); color: var(--primario); }
+.kpi-icone.petroleo { background: var(--petroleo); color: #8ff0cb; }
+.kpi-icone.neutro { background: #eef2f1; color: var(--cinza); }
+.kpi-titulo { font-size: 0.82rem; font-weight: 600; color: var(--cinza); }
+.kpi-valor { font-size: 1.65rem; font-weight: 800; letter-spacing: -0.02em; margin: 2px 0 4px; }
+.kpi-apoio { font-size: 0.78rem; color: var(--cinza); }
+
+/* ---------- Painéis (caixas brancas) ---------- */
+.painel {
+  background: var(--branco); border: 1px solid var(--borda); border-radius: 16px;
+  padding: 24px; margin-bottom: 20px; box-shadow: var(--sombra);
+}
+.painel-topo { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap; margin-bottom: 18px; }
+.painel h2 { font-size: 1.05rem; font-weight: 700; letter-spacing: -0.01em; }
+.painel-topo p { font-size: 0.82rem; color: var(--cinza); margin-top: 3px; display: flex; align-items: center; gap: 6px; }
+.graficos { display: grid; grid-template-columns: repeat(auto-fit, minmax(440px, 1fr)); gap: 20px; }
+.graficos .painel { margin-bottom: 0; }
+.graficos + .painel { margin-top: 20px; }
+
+/* Estado vazio e mensagens de sucesso */
+.painel.vazio { text-align: center; padding: 56px 24px; }
+.painel.vazio p { color: var(--cinza); margin: 6px 0 22px; }
+.icone-vazio {
+  width: 64px; height: 64px; border-radius: 20px; margin: 0 auto 16px;
+  background: var(--verde-suave); color: var(--primario); display: grid; place-items: center;
+}
+.icone-vazio.sucesso { background: var(--primario); color: white; border-radius: 50%; }
+
+/* ---------- Seletor do tipo de gráfico ---------- */
+.seletor { display: inline-flex; background: #eef3f1; padding: 3px; border-radius: 10px; gap: 2px; }
+.seletor button {
+  display: inline-flex; align-items: center; gap: 6px; border: 0; background: none;
+  padding: 6px 10px; border-radius: 8px; font: inherit; font-size: 0.78rem; font-weight: 600;
+  color: var(--cinza); cursor: pointer; transition: all 0.15s;
+}
+.seletor button:hover { color: var(--texto); }
+.seletor button.ativo { background: white; color: var(--primario); box-shadow: 0 1px 3px rgba(16, 42, 40, 0.15); }
+
+/* ---------- Gráficos ---------- */
+.circular { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
+.circular-grafico { position: relative; flex: 1 1 240px; min-width: 220px; }
+.centro-rosca {
+  position: absolute; inset: 0; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; pointer-events: none;
+}
+.centro-rosca small { font-size: 0.72rem; color: var(--cinza); font-weight: 600; }
+.centro-rosca b { font-size: 1.15rem; font-weight: 800; }
+.legenda { list-style: none; padding: 0; margin: 0; flex: 1 1 180px; display: flex; flex-direction: column; gap: 9px; }
+.legenda li { display: flex; align-items: center; gap: 10px; font-size: 0.85rem; }
+.legenda li span { flex: 1; color: var(--texto); }
+.legenda li b { color: var(--cinza); font-weight: 700; }
+.legenda i, .dica-linha i { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; display: inline-block; }
+
+/* Caixinha do mouse sobre o gráfico */
+.dica {
+  background: var(--menu); color: white; border-radius: 10px; padding: 10px 14px;
+  font-size: 0.8rem; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+.dica-titulo { font-weight: 700; margin-bottom: 6px; color: #9cc4ba; }
+.dica-linha { display: flex; align-items: center; gap: 8px; }
+
+/* ---------- Tabelas ---------- */
+.tabela-rolagem { max-height: 440px; overflow: auto; margin-bottom: 18px; border: 1px solid var(--borda); border-radius: 12px; }
+table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+th {
+  text-align: left; background: #f7faf9; color: var(--cinza); position: sticky; top: 0; z-index: 1;
+  font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
+}
+th, td { padding: 12px 16px; border-bottom: 1px solid var(--borda); }
+tbody tr:last-child td { border-bottom: 0; }
+tbody tr:hover { background: #f8fbfa; }
+.direita { text-align: right; }
+.mudo { color: var(--cinza); }
+tr.apagada { opacity: 0.5; }
+.bolinha { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 10px; }
+
+/* Valores: positivo em verde, negativo em verde-petróleo com sinal de menos */
+.positivo { color: var(--primario); font-weight: 700; }
+.negativo { color: var(--petroleo); font-weight: 700; }
+
+.barra-celula { width: 34%; }
+.barra { background: #edf3f1; border-radius: 99px; height: 8px; overflow: hidden; }
+.barra div { height: 100%; border-radius: 99px; background: var(--primario); transition: width 0.6s ease; }
+.barra.grande { height: 12px; }
+
+/* Etiquetas (selos) */
+.selo {
+  display: inline-block; background: #eef3f1; color: var(--cinza);
+  padding: 3px 10px; border-radius: 99px; font-size: 0.76rem; font-weight: 600;
+}
+.selo.verde { background: var(--verde-suave); color: var(--primario-escuro); }
+.resumo-previa { display: flex; gap: 8px; }
+
+/* ---------- Botões e campos ---------- */
+.botao {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  background: var(--primario); color: white; border: 0; border-radius: 10px; padding: 10px 18px;
+  font: inherit; font-size: 0.88rem; font-weight: 600; cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+}
+.botao:hover { background: var(--primario-escuro); }
+.botao:active { transform: scale(0.98); }
+.botao:disabled { background: #a9bdb8; cursor: not-allowed; }
+.botao.claro { background: var(--verde-suave); color: var(--primario-escuro); }
+.botao.claro:hover { background: #cdeee0; }
+.botao.perigo { background: #fdeceb; color: var(--vermelho); }
+.botao.perigo:hover { background: #fad4d1; }
+
+select, input[type="search"] {
+  padding: 9px 12px; border: 1px solid var(--borda); border-radius: 10px;
+  font: inherit; font-size: 0.88rem; background: white; color: var(--texto);
+}
+select:focus, input:focus { outline: 2px solid var(--destaque); outline-offset: -1px; }
+
+.acoes { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 4px; }
+.acoes.centro { justify-content: center; }
+.acoes.sem-margem { margin-top: 0; }
+
+/* Filtros da tabela */
+.filtros { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 14px; }
+.campo-busca { position: relative; flex: 1 1 260px; max-width: 360px; }
+.campo-busca svg { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--cinza); }
+.campo-busca input { width: 100%; padding-left: 36px; }
+.contagem { color: var(--cinza); font-size: 0.82rem; margin-left: auto; }
+
+/* Progresso da classificação */
+.progresso { display: flex; align-items: center; gap: 32px; flex-wrap: wrap; }
+.progresso-texto { flex: 0 0 auto; }
+.progresso-texto p { color: var(--cinza); font-size: 0.85rem; margin-top: 3px; }
+.progresso .barra { flex: 1 1 260px; }
+
+/* ---------- Área de upload ---------- */
+.upload {
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  border: 2px dashed #b9d6cc; border-radius: 16px; padding: 56px 24px;
+  text-align: center; cursor: pointer; background: #fafdfc;
+  transition: background 0.2s, border-color 0.2s;
+}
+.upload:hover, .upload.sobre { background: var(--verde-suave); border-color: var(--primario); }
+.upload b { font-size: 1.05rem; }
+.upload span { color: var(--cinza); font-size: 0.9rem; }
+.upload small { color: var(--cinza); margin-top: 10px; font-size: 0.78rem; }
+
+/* ---------- Indicador de etapas da importação ---------- */
+.etapas { list-style: none; display: flex; gap: 10px; padding: 0; margin: 0 0 20px; flex-wrap: wrap; }
+.etapas li {
+  display: flex; align-items: center; gap: 10px; color: var(--cinza);
+  font-weight: 600; font-size: 0.88rem; padding: 4px 18px 4px 4px;
+  background: white; border: 1px solid var(--borda); border-radius: 99px;
+}
+.etapas li span {
+  width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center;
+  background: #eef3f1; font-size: 0.8rem;
+}
+.etapas li.atual { color: var(--texto); border-color: var(--primario); }
+.etapas li.atual span { background: var(--primario); color: white; }
+.etapas li.feita span { background: var(--verde-suave); color: var(--primario); }
+
+/* ---------- Exportação ---------- */
+.cards.formatos { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+.formato {
+  background: var(--branco); border: 1px solid var(--borda); border-radius: 16px;
+  padding: 24px; box-shadow: var(--sombra); display: flex; flex-direction: column; align-items: flex-start;
+  transition: transform 0.15s, border-color 0.15s;
+}
+.formato:hover { transform: translateY(-3px); border-color: #b9d6cc; }
+.formato .kpi-icone { margin-bottom: 18px; }
+.formato h3 { font-size: 1.05rem; font-weight: 700; }
+.formato p { color: var(--cinza); font-size: 0.85rem; line-height: 1.5; margin: 6px 0 20px; flex: 1; }
+.nota { color: var(--cinza); font-size: 0.82rem; }
+
+/* ---------- Mensagens ---------- */
+.alerta {
+  background: var(--verde-suave); border: 1px solid #bfe6d6; color: var(--primario-escuro);
+  padding: 12px 16px; border-radius: 12px; margin-bottom: 16px; font-weight: 500; font-size: 0.9rem;
+}
+.alerta.erro { background: #fdeceb; border-color: #f5c6c2; color: var(--vermelho); }
+
+/* ---------- Animações de carregamento ---------- */
+/* Círculo girando: borda clara com um pedaço verde que gira */
+.carregando {
+  display: flex; flex-direction: column; align-items: center; gap: 14px;
+  padding: 44px; color: var(--cinza); font-weight: 600; font-size: 0.9rem;
+}
+.spinner {
+  width: 46px; height: 46px; border-radius: 50%;
+  border: 4px solid #d3ece2; border-top-color: var(--primario);
+  animation: girar 0.8s linear infinite;
+}
+.mini-spinner {
+  width: 14px; height: 14px; border-radius: 50%; display: inline-block;
+  border: 2px solid rgba(255, 255, 255, 0.4); border-top-color: white;
+  animation: girar 0.7s linear infinite;
+}
+.botao.claro .mini-spinner { border-color: rgba(0, 94, 74, 0.25); border-top-color: var(--primario-escuro); }
+@keyframes girar { to { transform: rotate(360deg); } }
+
+/* Esqueleto: bloco que "brilha" enquanto o conteúdo não chega */
+.esqueleto {
+  border-radius: 16px; margin-bottom: 20px;
+  background: linear-gradient(90deg, #e6eeeb 25%, #f4f8f7 50%, #e6eeeb 75%);
+  background-size: 200% 100%; animation: brilho 1.3s ease-in-out infinite;
+}
+.cards .esqueleto { margin-bottom: 0; }
+@keyframes brilho { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+
+/* Aparecer suave quando uma tela abre */
+.conteudo > :not(.topo) { animation: aparecer 0.35s ease; }
+@keyframes aparecer { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+/* ---------- Tela pequena ---------- */
+@media (max-width: 900px) {
+  .layout { flex-direction: column; }
+  .menu { width: 100%; height: auto; position: static; }
+  .conteudo { padding: 20px 16px 40px; }
+  .graficos { grid-template-columns: 1fr; }
+  .seletor button span { display: none; }
+}
