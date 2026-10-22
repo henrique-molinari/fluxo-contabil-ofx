@@ -1,0 +1,79 @@
+@startuml der
+title DER - Banco de dados (PostgreSQL)
+
+hide circle
+left to right direction
+skinparam shadowing false
+skinparam nodesep 40
+skinparam ranksep 90
+skinparam entity {
+  BackgroundColor White
+  BorderColor #444444
+}
+
+entity usuarios #E5F6EF {
+  * id : serial <<PK>>
+  --
+  * nome : varchar(120)
+  * email : varchar(160) <<UK>>
+  * senha_hash : varchar(100)
+  * perfil : ANALISTA | ESTAGIARIO | GESTOR
+  * ativo : boolean
+  * criado_em : timestamptz
+}
+
+entity refresh_tokens {
+  * id : serial <<PK>>
+  --
+  * usuario_id : int <<FK>>
+  * token_hash : char(64) <<UK>>
+  * expira_em : timestamptz
+  revogado_em : timestamptz
+  * criado_em : timestamptz
+}
+
+entity movimentacoes {
+  * id : serial <<PK>>
+  --
+  data_movimentacao : date
+  valor : numeric(15,2)
+  descricao : varchar(255)
+  categoria : varchar(50)
+  criado_por : int <<FK>>
+  alterado_por : int <<FK>>
+  criado_em : timestamptz
+  alterado_em : timestamptz
+  --
+  UK (data, valor, descricao)
+}
+
+entity comentarios {
+  * id : serial <<PK>>
+  --
+  * movimentacao_id : int <<FK>>
+  * usuario_id : int <<FK>>
+  * texto : text
+  * criado_em : timestamptz
+}
+
+entity tarefas {
+  * id : serial <<PK>>
+  --
+  * titulo : varchar(160)
+  descricao : text
+  * tipo : GERAL | BALANCO
+  * status : PENDENTE | EM_ANDAMENTO | CONCLUIDA
+  * criado_por : int <<FK>>
+  * atribuido_a : int <<FK>>
+  prazo : date
+  * criado_em : timestamptz
+  concluido_em : timestamptz
+}
+
+usuarios ||--o{ refresh_tokens : sessões
+usuarios ||--o{ comentarios : escreve
+usuarios ||--o{ tarefas : delega / recebe
+usuarios |o--o{ movimentacoes : lança / altera
+movimentacoes ||--o{ comentarios : recebe
+
+@enduml

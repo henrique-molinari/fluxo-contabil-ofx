@@ -1,0 +1,3412 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2025-10-09T08:53:20.000Z",
+  "__export_source": "insomnia.desktop.app:v10.3.0",
+  "resources": [
+    {
+      "_id": "wrk_ofx",
+      "_type": "workspace",
+      "parentId": null,
+      "name": "Projeto OFX - API",
+      "scope": "collection",
+      "description": "Backend Node.js. Rode `npm run db:seed` e `npm run dev` na pasta backend. Veja api/README.md.",
+      "created": 1760000000000,
+      "modified": 1760000000000
+    },
+    {
+      "_id": "env_base",
+      "_type": "environment",
+      "parentId": "wrk_ofx",
+      "name": "Base Environment",
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": 1,
+      "isPrivate": false,
+      "data": {
+        "base_url": "http://localhost:3333/api",
+        "senha": "Mudar@123",
+        "email_analista": "analista@ofx.com",
+        "email_estagiario": "estagiario@ofx.com",
+        "email_gestor": "gestor@ofx.com"
+      }
+    },
+    {
+      "_id": "env_local",
+      "_type": "environment",
+      "parentId": "env_base",
+      "name": "Local",
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": 2,
+      "isPrivate": false,
+      "data": {}
+    },
+    {
+      "_id": "fld_saude",
+      "_type": "request_group",
+      "parentId": "wrk_ofx",
+      "name": "00 - Saúde da API",
+      "description": "",
+      "environment": {},
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": -999900
+    },
+    {
+      "_id": "req_saude",
+      "_type": "request",
+      "parentId": "fld_saude",
+      "name": "Saúde (pública)",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/saude",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": -999800,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "fld_auth",
+      "_type": "request_group",
+      "parentId": "wrk_ofx",
+      "name": "01 - Autenticação (quem é você? -> 401)",
+      "description": "Login, renovação e logout. Todas as outras pastas usam o token do login do perfil correspondente automaticamente.",
+      "environment": {},
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": -999700
+    },
+    {
+      "_id": "req_login_analista",
+      "_type": "request",
+      "parentId": "fld_auth",
+      "name": "Login analista",
+      "description": "",
+      "method": "POST",
+      "url": "{{ _.base_url }}/auth/login",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"email\": \"{{ _.email_analista }}\",\n  \"senha\": \"{{ _.senha }}\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": -999600,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_login_estagiario",
+      "_type": "request",
+      "parentId": "fld_auth",
+      "name": "Login estagiario",
+      "description": "",
+      "method": "POST",
+      "url": "{{ _.base_url }}/auth/login",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"email\": \"{{ _.email_estagiario }}\",\n  \"senha\": \"{{ _.senha }}\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": -999500,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_login_gestor",
+      "_type": "request",
+      "parentId": "fld_auth",
+      "name": "Login gestor",
+      "description": "",
+      "method": "POST",
+      "url": "{{ _.base_url }}/auth/login",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"email\": \"{{ _.email_gestor }}\",\n  \"senha\": \"{{ _.senha }}\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": -999400,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_login_errado",
+      "_type": "request",
+      "parentId": "fld_auth",
+      "name": "Login com senha errada",
+      "description": "",
+      "method": "POST",
+      "url": "{{ _.base_url }}/auth/login",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"email\": \"{{ _.email_analista }}\",\n  \"senha\": \"senha-errada\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": -999300,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_login_invalido",
+      "_type": "request",
+      "parentId": "fld_auth",
+      "name": "Login com corpo inválido",
+      "description": "",
+      "method": "POST",
+      "url": "{{ _.base_url }}/auth/login",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"email\": \"nao-e-email\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": -999200,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_sem_token",
+      "_type": "request",
+      "parentId": "fld_auth",
+      "name": "Rota protegida sem token",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/movimentacoes",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": -999100,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_token_falso",
+      "_type": "request",
+      "parentId": "fld_auth",
+      "name": "Rota protegida com token falso",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/movimentacoes",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "token.invalido.123",
+        "prefix": ""
+      },
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": -999000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_eu",
+      "_type": "request",
+      "parentId": "fld_auth",
+      "name": "Quem sou eu (analista)",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/auth/eu",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_login_analista', 'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 600 %}",
+        "prefix": ""
+      },
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": -998900,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_refresh",
+      "_type": "request",
+      "parentId": "fld_auth",
+      "name": "Renovar token (analista)",
+      "description": "Faz um login novo antes (para ter um refresh token ainda não usado). Cada refresh token só vale uma vez.",
+      "method": "POST",
+      "url": "{{ _.base_url }}/auth/refresh",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"refreshToken\": \"{% response 'body', 'req_login_analista', 'b64::JC5yZWZyZXNoVG9rZW4=::46b', 'always', 60 %}\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": -998800,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_logout",
+      "_type": "request",
+      "parentId": "fld_auth",
+      "name": "Logout (analista)",
+      "description": "",
+      "method": "POST",
+      "url": "{{ _.base_url }}/auth/logout",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"refreshToken\": \"{% response 'body', 'req_login_analista', 'b64::JC5yZWZyZXNoVG9rZW4=::46b', 'always', 60 %}\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": -998700,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_senha_errada",
+      "_type": "request",
+      "parentId": "fld_auth",
+      "name": "Trocar senha com senha atual errada",
+      "description": "",
+      "method": "POST",
+      "url": "{{ _.base_url }}/auth/trocar-senha",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"senhaAtual\": \"errada\",\n  \"senhaNova\": \"NovaSenha@123\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_login_analista', 'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 600 %}",
+        "prefix": ""
+      },
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": -998600,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "fld_analista",
+      "_type": "request_group",
+      "parentId": "wrk_ofx",
+      "name": "02 - Analista fiscal",
+      "description": "Analisa, altera contas e faz comentários. Também importa, vê gráficos e exporta.",
+      "environment": {},
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": -998500
+    },
+    {
+      "_id": "req_a_categorias",
+      "_type": "request",
+      "parentId": "fld_analista",
+      "name": "Listar categorias",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/categorias",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_login_analista', 'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 600 %}",
+        "prefix": ""
+      },
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": -998400,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_a_preview",
+      "_type": "request",
+      "parentId": "fld_analista",
+      "name": "Importar - prévia (extrato_completo)",
+      "description": "",
+      "method": "POST",
+      "url": "{{ _.base_url }}/importacao/preview",
+      "body": {
+        "mimeType": "multipart/form-data",
+        "params": [
+          {
+            "name": "arquivo",
+            "type": "file",
+            "fileName": "C:\\Users\\henri\\OneDrive\\Desktop\\PROJETO OFX\\ProjetoOFX\\api\\exemplos\\extrato_completo.ofx"
+          }
+        ]
+      },
+      "parameters": [],
+      "headers": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_login_analista', 'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 600 %}",
+        "prefix": ""
+      },
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": -998300,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_a_importar",
+      "_type": "request",
+      "parentId": "fld_analista",
+      "name": "Importar OFX (extrato_completo)",
+      "description": "",
+      "method": "POST",
+      "url": "{{ _.base_url }}/importacao",
+      "body": {
+        "mimeType": "multipart/form-data",
+        "params": [
+          {
+            "name": "arquivo",
+            "type": "file",
+            "fileName": "C:\\Users\\henri\\OneDrive\\Desktop\\PROJETO OFX\\ProjetoOFX\\api\\exemplos\\extrato_completo.ofx"
+          }
+        ]
+      },
+      "parameters": [],
+      "headers": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_login_analista', 'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 600 %}",
+        "prefix": ""
+      },
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": -998200,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_a_importar_de_novo",
+      "_type": "request",
+      "parentId": "fld_analista",
+      "name": "Importar o mesmo OFX de novo (tudo duplicado)",
+      "description": "",
+      "method": "POST",
+      "url": "{{ _.base_url }}/importacao",
+      "body": {
+        "mimeType": "multipart/form-data",
+        "params": [
+          {
+            "name": "arquivo",
+            "type": "file",
+            "fileName": "C:\\Users\\henri\\OneDrive\\Desktop\\PROJETO OFX\\ProjetoOFX\\api\\exemplos\\extrato_completo.ofx"
+          }
+        ]
+      },
+      "parameters": [],
+      "headers": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_login_analista', 'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 600 %}",
+        "prefix": ""
+      },
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": -998100,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_a_listar",
+      "_type": "request",
+      "parentId": "fld_analista",
+      "name": "Listar movimentações",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/movimentacoes",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_login_analista', 'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 600 %}",
+        "prefix": ""
+      },
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": -998000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_a_filtrar",
+      "_type": "request",
+      "parentId": "fld_analista",
+      "name": "Listar movimentações filtrando (busca + categoria)",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/movimentacoes?busca=aluguel&categoria=Aluguel",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_login_analista', 'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 600 %}",
+        "prefix": ""
+      },
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": -997900,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_a_lancar",
+      "_type": "request",
+      "parentId": "fld_analista",
+      "name": "Lançar movimentação manual",
+      "description": "",
+      "method": "POST",
+      "url": "{{ _.base_url }}/movimentacoes",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"data_movimentacao\": \"2026-10-20\",\n  \"valor\": -19.9,\n  \"descricao\": \"Material de teste {% now 'millis' %}\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_login_analista', 'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 600 %}",
+        "prefix": ""
+      },
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": -997800,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_a_alterar",
+      "_type": "request",
+      "parentId": "fld_analista",
+      "name": "Alterar categoria da conta lançada",
+      "description": "",
+      "method": "PATCH",
+      "url": "{{ _.base_url }}/movimentacoes/{% response 'body', 'req_a_lancar', 'b64::JC5pZA==::46b', 'never', 60 %}",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"categoria\": \"Outros\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_login_analista', 'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 600 %}",
+        "prefix": ""
+      },
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": -997700,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_a_alterar_invalida",
+      "_type": "request",
+      "parentId": "fld_analista",
+      "name": "Alterar com categoria inválida",
+      "description": "",
+      "method": "PATCH",
+      "url": "{{ _.base_url }}/movimentacoes/{% response 'body', 'req_a_lancar', 'b64::JC5pZA==::46b', 'never', 60 %}",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"categoria\": \"Inventada\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_login_analista', 'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 600 %}",
+        "prefix": ""
+      },
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": -997600,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_a_alterar_404",
+      "_type": "request",
+      "parentId": "fld_analista",
+      "name": "Alterar conta que não existe",
+      "description": "",
+      "method": "PATCH",
+      "url": "{{ _.base_url }}/movimentacoes/999999",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"categoria\": \"Outros\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_login_analista', 'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 600 %}",
+        "prefix": ""
+      },
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": -997500,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_a_auto",
+      "_type": "request",
+      "parentId": "fld_analista",
+      "name": "Classificar automaticamente",
+      "description": "",
+      "method": "POST",
+      "url": "{{ _.base_url }}/movimentacoes/classificar-automatico",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_login_analista', 'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 600 %}",
+        "prefix": ""
+      },
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": -997400,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_a_comentar",
+      "_type": "request",
+      "parentId": "fld_analista",
+      "name": "Comentar a conta lançada",
+      "description": "",
+      "method": "POST",
+      "url": "{{ _.base_url }}/movimentacoes/{% response 'body', 'req_a_lancar', 'b64::JC5pZA==::46b', 'never', 60 %}/comentarios",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"texto\": \"Conferir nota fiscal deste lançamento.\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_login_analista', 'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 600 %}",
+        "prefix": ""
+      },
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": -997300,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_a_comentarios",
+      "_type": "request",
+      "parentId": "fld_analista",
+      "name": "Listar comentários da conta",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/movimentacoes/{% response 'body', 'req_a_lancar', 'b64::JC5pZA==::46b', 'never', 60 %}/comentarios",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_login_analista', 'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 600 %}",
+        "prefix": ""
+      },
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": -997200,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_a_comentario_vazio",
+      "_type": "request",
+      "parentId": "fld_analista",
+      "name": "Comentar com texto vazio",
+      "description": "",
+      "method": "POST",
+      "url": "{{ _.base_url }}/movimentacoes/{% response 'body', 'req_a_lancar', 'b64::JC5pZA==::46b', 'never', 60 %}/comentarios",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"texto\": \"   \"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_login_analista', 'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 600 %}",
+        "prefix": ""
+      },
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": -997100,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_a_apagar_comentario",
+      "_type": "request",
+      "parentId": "fld_analista",
+      "name": "Apagar o próprio comentário",
+      "description": "",
+      "method": "DELETE",
+      "url": "{{ _.base_url }}/comentarios/{% response 'body', 'req_a_comentar', 'b64::JC5pZA==::46b', 'never', 60 %}",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_login_analista', 'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 600 %}",
+        "prefix": ""
+      },
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": -997000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_a_resumo",
+      "_type": "request",
+      "parentId": "fld_analista",
+      "name": "Painel de análise (resumo)",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/analise/resumo",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_login_analista', 'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 600 %}",
+        "prefix": ""
+      },
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": -996900,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_a_resumo_periodo",
+      "_type": "request",
+      "parentId": "fld_analista",
+      "name": "Painel de análise filtrado por período",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/analise/resumo?de=2026-01-01&ate=2026-12-31",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_login_analista', 'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 600 %}",
+        "prefix": ""
+      },
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": -996800,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_a_export_csv",
+      "_type": "request",
+      "parentId": "fld_analista",
+      "name": "Exportar .csv",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/exportacao/csv",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_login_analista', 'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 600 %}",
+        "prefix": ""
+      },
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": -996700,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_a_export_xlsx",
+      "_type": "request",
+      "parentId": "fld_analista",
+      "name": "Exportar .xlsx",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/exportacao/xlsx",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_login_analista', 'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 600 %}",
+        "prefix": ""
+      },
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": -996600,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_a_export_txt",
+      "_type": "request",
+      "parentId": "fld_analista",
+      "name": "Exportar .txt",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/exportacao/txt",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_login_analista', 'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 600 %}",
+        "prefix": ""
+      },
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": -996500,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_a_export_ofx",
+      "_type": "request",
+      "parentId": "fld_analista",
+      "name": "Exportar .ofx",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/exportacao/ofx",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_login_analista', 'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 600 %}",
+        "prefix": ""
+      },
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": -996400,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_a_apagar",
+      "_type": "request",
+      "parentId": "fld_analista",
+      "name": "Apagar a conta lançada",
+      "description": "",
+      "method": "DELETE",
+      "url": "{{ _.base_url }}/movimentacoes/{% response 'body', 'req_a_lancar', 'b64::JC5pZA==::46b', 'never', 60 %}",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_login_analista', 'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 600 %}",
+        "prefix": ""
+      },
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": -996300,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_a_tarefas",
+      "_type": "request",
+      "parentId": "fld_analista",
+      "name": "Minhas tarefas",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/tarefas",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_login_analista', 'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 600 %}",
+        "prefix": ""
+      },
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": -996200,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "fld_estagiario",
+      "_type": "request_group",
+      "parentId": "wrk_ofx",
+      "name": "03 - Estagiário",
+      "description": "Só lança dados e consulta. Sem gráficos, relatórios ou edição.",
+      "environment": {},
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": -996100
+    },
+    {
+      "_id": "req_e_importar",
+      "_type": "request",
+      "parentId": "fld_estagiario",
+      "name": "Importar OFX (extrato_simples)",
+      "description": "",
+      "method": "POST",
+      "url": "{{ _.base_url }}/importacao",
+      "body": {
+        "mimeType": "multipart/form-data",
+        "params": [
+          {
+            "name": "arquivo",
+            "type": "file",
+            "fileName": "C:\\Users\\henri\\OneDrive\\Desktop\\PROJETO OFX\\ProjetoOFX\\api\\exemplos\\extrato_simples.ofx"
+          }
+        ]
+      },
+      "parameters": [],
+      "headers": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_login_estagiario', 'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 600 %}",
+        "prefix": ""
+      },
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": -996000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_e_lancar",
+      "_type": "request",
+      "parentId": "fld_estagiario",
+      "name": "Lançar movimentação manual",
+      "description": "",
+      "method": "POST",
+      "url": "{{ _.base_url }}/movimentacoes",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"data_movimentacao\": \"2026-10-21\",\n  \"valor\": 150,\n  \"descricao\": \"Recebimento teste {% now 'millis' %}\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_login_estagiario', 'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 600 %}",
+        "prefix": ""
+      },
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": -995900,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_e_listar",
+      "_type": "request",
+      "parentId": "fld_estagiario",
+      "name": "Listar movimentações",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/movimentacoes",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_login_estagiario', 'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 600 %}",
+        "prefix": ""
+      },
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": -995800,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_e_resumo",
+      "_type": "request",
+      "parentId": "fld_estagiario",
+      "name": "Ver gráficos/resumo (PROIBIDO)",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/analise/resumo",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_login_estagiario', 'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 600 %}",
+        "prefix": ""
+      },
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": -995700,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_e_exportar",
+      "_type": "request",
+      "parentId": "fld_estagiario",
+      "name": "Tirar relatório CSV (PROIBIDO)",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/exportacao/csv",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_login_estagiario', 'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 600 %}",
+        "prefix": ""
+      },
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": -995600,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_e_alterar",
+      "_type": "request",
+      "parentId": "fld_estagiario",
+      "name": "Alterar categoria (PROIBIDO)",
+      "description": "",
+      "method": "PATCH",
+      "url": "{{ _.base_url }}/movimentacoes/{% response 'body', 'req_a_lancar', 'b64::JC5pZA==::46b', 'no-history', 60 %}",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"categoria\": \"Outros\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_login_estagiario', 'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 600 %}",
+        "prefix": ""
+      },
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": -995500,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_e_apagar_tudo",
+      "_type": "request",
+      "parentId": "fld_estagiario",
+      "name": "Limpar tabela (PROIBIDO)",
+      "description": "",
+      "method": "DELETE",
+      "url": "{{ _.base_url }}/movimentacoes",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_login_estagiario', 'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 600 %}",
+        "prefix": ""
+      },
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": -995400,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_e_auto",
+      "_type": "request",
+      "parentId": "fld_estagiario",
+      "name": "Classificar automaticamente (PROIBIDO)",
+      "description": "",
+      "method": "POST",
+      "url": "{{ _.base_url }}/movimentacoes/classificar-automatico",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_login_estagiario', 'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 600 %}",
+        "prefix": ""
+      },
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": -995300,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_e_comentarios",
+      "_type": "request",
+      "parentId": "fld_estagiario",
+      "name": "Ler comentários (PROIBIDO)",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/movimentacoes/{% response 'body', 'req_a_lancar', 'b64::JC5pZA==::46b', 'no-history', 60 %}/comentarios",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_login_estagiario', 'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 600 %}",
+        "prefix": ""
+      },
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": -995200,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_e_criar_tarefa",
+      "_type": "request",
+      "parentId": "fld_estagiario",
+      "name": "Criar tarefa (PROIBIDO)",
+      "description": "",
+      "method": "POST",
+      "url": "{{ _.base_url }}/tarefas",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"titulo\": \"Tarefa\",\n  \"atribuido_a\": 1\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_login_estagiario', 'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 600 %}",
+        "prefix": ""
+      },
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": -995100,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_e_usuarios",
+      "_type": "request",
+      "parentId": "fld_estagiario",
+      "name": "Listar usuários (PROIBIDO)",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/usuarios",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_login_estagiario', 'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 600 %}",
+        "prefix": ""
+      },
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": -995000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_e_tarefas",
+      "_type": "request",
+      "parentId": "fld_estagiario",
+      "name": "Minhas tarefas",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/tarefas",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_login_estagiario', 'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 600 %}",
+        "prefix": ""
+      },
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": -994900,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "fld_gestor",
+      "_type": "request_group",
+      "parentId": "wrk_ofx",
+      "name": "04 - Gestor (head)",
+      "description": "Acompanha gráficos, pede balanços e delega tarefas. Não importa nem altera contas.",
+      "environment": {},
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": -994800
+    },
+    {
+      "_id": "req_g_resumo",
+      "_type": "request",
+      "parentId": "fld_gestor",
+      "name": "Painel de análise (resumo)",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/analise/resumo",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_login_gestor', 'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 600 %}",
+        "prefix": ""
+      },
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": -994700,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_g_export_csv",
+      "_type": "request",
+      "parentId": "fld_gestor",
+      "name": "Exportar .csv",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/exportacao/csv",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_login_gestor', 'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 600 %}",
+        "prefix": ""
+      },
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": -994600,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_g_export_xlsx",
+      "_type": "request",
+      "parentId": "fld_gestor",
+      "name": "Exportar .xlsx",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/exportacao/xlsx",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_login_gestor', 'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 600 %}",
+        "prefix": ""
+      },
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": -994500,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_g_listar",
+      "_type": "request",
+      "parentId": "fld_gestor",
+      "name": "Listar movimentações",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/movimentacoes",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_login_gestor', 'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 600 %}",
+        "prefix": ""
+      },
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": -994400,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_g_comentarios",
+      "_type": "request",
+      "parentId": "fld_gestor",
+      "name": "Ler comentários de uma conta",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/movimentacoes/{% response 'body', 'req_g_listar', 'b64::JFswXS5pZA==::46b', 'no-history', 60 %}/comentarios",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_login_gestor', 'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 600 %}",
+        "prefix": ""
+      },
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": -994300,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_g_tarefa",
+      "_type": "request",
+      "parentId": "fld_gestor",
+      "name": "Delegar balanço ao analista",
+      "description": "",
+      "method": "POST",
+      "url": "{{ _.base_url }}/tarefas",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"titulo\": \"Balanço de setembro\",\n  \"descricao\": \"Fechar o balanço e comentar as contas sem categoria.\",\n  \"tipo\": \"BALANCO\",\n  \"atribuido_a\": {% response 'body', 'req_login_analista', 'b64::JC51c3VhcmlvLmlk::46b', 'no-history', 60 %},\n  \"prazo\": \"2026-10-30\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_login_gestor', 'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 600 %}",
+        "prefix": ""
+      },
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": -994200,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_g_tarefas",
+      "_type": "request",
+      "parentId": "fld_gestor",
+      "name": "Listar tarefas da equipe",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/tarefas",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_login_gestor', 'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 600 %}",
+        "prefix": ""
+      },
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": -994100,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_g_tarefa_analista_ve",
+      "_type": "request",
+      "parentId": "fld_gestor",
+      "name": "Analista vê a tarefa delegada",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/tarefas",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_login_analista', 'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 600 %}",
+        "prefix": ""
+      },
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": -994000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_g_tarefa_estagiario_barrado",
+      "_type": "request",
+      "parentId": "fld_gestor",
+      "name": "Estagiário tenta concluir tarefa alheia (PROIBIDO)",
+      "description": "",
+      "method": "PATCH",
+      "url": "{{ _.base_url }}/tarefas/{% response 'body', 'req_g_tarefa', 'b64::JC5pZA==::46b', 'never', 60 %}/status",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"status\": \"CONCLUIDA\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_login_estagiario', 'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 600 %}",
+        "prefix": ""
+      },
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": -993900,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_g_tarefa_andamento",
+      "_type": "request",
+      "parentId": "fld_gestor",
+      "name": "Analista inicia a tarefa",
+      "description": "",
+      "method": "PATCH",
+      "url": "{{ _.base_url }}/tarefas/{% response 'body', 'req_g_tarefa', 'b64::JC5pZA==::46b', 'never', 60 %}/status",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"status\": \"EM_ANDAMENTO\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_login_analista', 'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 600 %}",
+        "prefix": ""
+      },
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": -993800,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_g_tarefa_concluida",
+      "_type": "request",
+      "parentId": "fld_gestor",
+      "name": "Analista conclui a tarefa",
+      "description": "",
+      "method": "PATCH",
+      "url": "{{ _.base_url }}/tarefas/{% response 'body', 'req_g_tarefa', 'b64::JC5pZA==::46b', 'never', 60 %}/status",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"status\": \"CONCLUIDA\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_login_analista', 'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 600 %}",
+        "prefix": ""
+      },
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": -993700,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_g_tarefa_excluir_analista",
+      "_type": "request",
+      "parentId": "fld_gestor",
+      "name": "Analista tenta excluir tarefa (PROIBIDO)",
+      "description": "",
+      "method": "DELETE",
+      "url": "{{ _.base_url }}/tarefas/{% response 'body', 'req_g_tarefa', 'b64::JC5pZA==::46b', 'never', 60 %}",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_login_analista', 'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 600 %}",
+        "prefix": ""
+      },
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": -993600,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_g_tarefa_excluir",
+      "_type": "request",
+      "parentId": "fld_gestor",
+      "name": "Gestor exclui a tarefa",
+      "description": "",
+      "method": "DELETE",
+      "url": "{{ _.base_url }}/tarefas/{% response 'body', 'req_g_tarefa', 'b64::JC5pZA==::46b', 'never', 60 %}",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_login_gestor', 'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 600 %}",
+        "prefix": ""
+      },
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": -993500,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_g_usuarios",
+      "_type": "request",
+      "parentId": "fld_gestor",
+      "name": "Listar usuários",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/usuarios",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_login_gestor', 'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 600 %}",
+        "prefix": ""
+      },
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": -993400,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_g_novo_usuario",
+      "_type": "request",
+      "parentId": "fld_gestor",
+      "name": "Cadastrar usuário (estagiário)",
+      "description": "",
+      "method": "POST",
+      "url": "{{ _.base_url }}/usuarios",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"nome\": \"Novo Estagiário\",\n  \"email\": \"novo.{% now 'millis' %}@ofx.com\",\n  \"senha\": \"Senha@12345\",\n  \"perfil\": \"ESTAGIARIO\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_login_gestor', 'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 600 %}",
+        "prefix": ""
+      },
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": -993300,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_g_usuario_perfil",
+      "_type": "request",
+      "parentId": "fld_gestor",
+      "name": "Promover usuário a analista",
+      "description": "",
+      "method": "PATCH",
+      "url": "{{ _.base_url }}/usuarios/{% response 'body', 'req_g_novo_usuario', 'b64::JC5pZA==::46b', 'never', 60 %}",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"perfil\": \"ANALISTA\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_login_gestor', 'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 600 %}",
+        "prefix": ""
+      },
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": -993200,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_g_usuario_senha",
+      "_type": "request",
+      "parentId": "fld_gestor",
+      "name": "Redefinir senha do usuário",
+      "description": "",
+      "method": "POST",
+      "url": "{{ _.base_url }}/usuarios/{% response 'body', 'req_g_novo_usuario', 'b64::JC5pZA==::46b', 'never', 60 %}/redefinir-senha",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"senhaNova\": \"OutraSenha@123\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_login_gestor', 'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 600 %}",
+        "prefix": ""
+      },
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": -993100,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_g_usuario_desativar",
+      "_type": "request",
+      "parentId": "fld_gestor",
+      "name": "Desativar usuário",
+      "description": "",
+      "method": "PATCH",
+      "url": "{{ _.base_url }}/usuarios/{% response 'body', 'req_g_novo_usuario', 'b64::JC5pZA==::46b', 'never', 60 %}",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"ativo\": false\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_login_gestor', 'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 600 %}",
+        "prefix": ""
+      },
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": -993000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_g_auto_desativar",
+      "_type": "request",
+      "parentId": "fld_gestor",
+      "name": "Gestor tenta se desativar",
+      "description": "",
+      "method": "PATCH",
+      "url": "{{ _.base_url }}/usuarios/{% response 'body', 'req_login_gestor', 'b64::JC51c3VhcmlvLmlk::46b', 'no-history', 60 %}",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"ativo\": false\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_login_gestor', 'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 600 %}",
+        "prefix": ""
+      },
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": -992900,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_g_importar",
+      "_type": "request",
+      "parentId": "fld_gestor",
+      "name": "Importar OFX (PROIBIDO)",
+      "description": "",
+      "method": "POST",
+      "url": "{{ _.base_url }}/importacao",
+      "body": {
+        "mimeType": "multipart/form-data",
+        "params": [
+          {
+            "name": "arquivo",
+            "type": "file",
+            "fileName": "C:\\Users\\henri\\OneDrive\\Desktop\\PROJETO OFX\\ProjetoOFX\\api\\exemplos\\extrato_simples.ofx"
+          }
+        ]
+      },
+      "parameters": [],
+      "headers": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_login_gestor', 'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 600 %}",
+        "prefix": ""
+      },
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": -992800,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_g_lancar",
+      "_type": "request",
+      "parentId": "fld_gestor",
+      "name": "Lançar movimentação (PROIBIDO)",
+      "description": "",
+      "method": "POST",
+      "url": "{{ _.base_url }}/movimentacoes",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"data_movimentacao\": \"2026-10-21\",\n  \"valor\": 1,\n  \"descricao\": \"x\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_login_gestor', 'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 600 %}",
+        "prefix": ""
+      },
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": -992700,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_g_alterar",
+      "_type": "request",
+      "parentId": "fld_gestor",
+      "name": "Alterar categoria (PROIBIDO)",
+      "description": "",
+      "method": "PATCH",
+      "url": "{{ _.base_url }}/movimentacoes/{% response 'body', 'req_g_listar', 'b64::JFswXS5pZA==::46b', 'no-history', 60 %}",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"categoria\": \"Outros\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_login_gestor', 'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 600 %}",
+        "prefix": ""
+      },
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": -992600,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_g_comentar",
+      "_type": "request",
+      "parentId": "fld_gestor",
+      "name": "Comentar conta (PROIBIDO)",
+      "description": "",
+      "method": "POST",
+      "url": "{{ _.base_url }}/movimentacoes/{% response 'body', 'req_g_listar', 'b64::JFswXS5pZA==::46b', 'no-history', 60 %}/comentarios",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"texto\": \"oi\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_login_gestor', 'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 600 %}",
+        "prefix": ""
+      },
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": -992500,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "fld_erros",
+      "_type": "request_group",
+      "parentId": "wrk_ofx",
+      "name": "05 - Validação e erros",
+      "description": "",
+      "environment": {},
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": -992400
+    },
+    {
+      "_id": "req_x_formato",
+      "_type": "request",
+      "parentId": "fld_erros",
+      "name": "Exportar formato inválido",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/exportacao/pdf",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_login_analista', 'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 600 %}",
+        "prefix": ""
+      },
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": -992300,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_x_arquivo_ruim",
+      "_type": "request",
+      "parentId": "fld_erros",
+      "name": "Importar arquivo que não é OFX",
+      "description": "",
+      "method": "POST",
+      "url": "{{ _.base_url }}/importacao",
+      "body": {
+        "mimeType": "multipart/form-data",
+        "params": [
+          {
+            "name": "arquivo",
+            "type": "file",
+            "fileName": "C:\\Users\\henri\\OneDrive\\Desktop\\PROJETO OFX\\ProjetoOFX\\api\\exemplos\\arquivo_invalido.txt"
+          }
+        ]
+      },
+      "parameters": [],
+      "headers": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_login_analista', 'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 600 %}",
+        "prefix": ""
+      },
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": -992200,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_x_sem_arquivo",
+      "_type": "request",
+      "parentId": "fld_erros",
+      "name": "Importar sem enviar arquivo",
+      "description": "",
+      "method": "POST",
+      "url": "{{ _.base_url }}/importacao",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_login_analista', 'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 600 %}",
+        "prefix": ""
+      },
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": -992100,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_x_valor_zero",
+      "_type": "request",
+      "parentId": "fld_erros",
+      "name": "Lançar com valor zero",
+      "description": "",
+      "method": "POST",
+      "url": "{{ _.base_url }}/movimentacoes",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"data_movimentacao\": \"2026-10-21\",\n  \"valor\": 0,\n  \"descricao\": \"x\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_login_analista', 'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 600 %}",
+        "prefix": ""
+      },
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": -992000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_x_data_ruim",
+      "_type": "request",
+      "parentId": "fld_erros",
+      "name": "Lançar com data inválida",
+      "description": "",
+      "method": "POST",
+      "url": "{{ _.base_url }}/movimentacoes",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"data_movimentacao\": \"21/10/2026\",\n  \"valor\": 10,\n  \"descricao\": \"x\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_login_analista', 'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 600 %}",
+        "prefix": ""
+      },
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": -991900,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_x_id_ruim",
+      "_type": "request",
+      "parentId": "fld_erros",
+      "name": "Id que não é número",
+      "description": "",
+      "method": "PATCH",
+      "url": "{{ _.base_url }}/movimentacoes/abc",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"categoria\": \"Outros\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_login_analista', 'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 600 %}",
+        "prefix": ""
+      },
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": -991800,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_x_json_ruim",
+      "_type": "request",
+      "parentId": "fld_erros",
+      "name": "JSON quebrado",
+      "description": "",
+      "method": "POST",
+      "url": "{{ _.base_url }}/movimentacoes",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{ isto nao e json"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_login_analista', 'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 600 %}",
+        "prefix": ""
+      },
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": -991700,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_x_rota",
+      "_type": "request",
+      "parentId": "fld_erros",
+      "name": "Rota que não existe",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/rota-que-nao-existe",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_login_analista', 'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 600 %}",
+        "prefix": ""
+      },
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": -991600,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "uts_saude",
+      "_type": "unit_test_suite",
+      "parentId": "wrk_ofx",
+      "name": "Saúde",
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": 100
+    },
+    {
+      "_id": "ut_saude",
+      "_type": "unit_test",
+      "parentId": "uts_saude",
+      "name": "Saúde (pública)",
+      "code": "const resposta = await insomnia.send();\nexpect(resposta.status).to.equal(200);\nconst corpo = JSON.parse(resposta.data);\nexpect(corpo.status).to.equal('ok');",
+      "requestId": "req_saude",
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": 100
+    },
+    {
+      "_id": "uts_auth",
+      "_type": "unit_test_suite",
+      "parentId": "wrk_ofx",
+      "name": "Autenticação (401)",
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": 200
+    },
+    {
+      "_id": "ut_login_analista",
+      "_type": "unit_test",
+      "parentId": "uts_auth",
+      "name": "Login analista",
+      "code": "const resposta = await insomnia.send();\nexpect(resposta.status).to.equal(200);\nconst corpo = JSON.parse(resposta.data);\nexpect(corpo.accessToken).to.be.a('string');\nexpect(corpo.refreshToken).to.be.a('string');\nexpect(corpo.usuario.perfil).to.equal('ANALISTA');\nexpect(corpo.usuario).to.not.have.property('senha_hash');",
+      "requestId": "req_login_analista",
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": 100
+    },
+    {
+      "_id": "ut_login_estagiario",
+      "_type": "unit_test",
+      "parentId": "uts_auth",
+      "name": "Login estagiario",
+      "code": "const resposta = await insomnia.send();\nexpect(resposta.status).to.equal(200);\nconst corpo = JSON.parse(resposta.data);\nexpect(corpo.accessToken).to.be.a('string');\nexpect(corpo.refreshToken).to.be.a('string');\nexpect(corpo.usuario.perfil).to.equal('ESTAGIARIO');\nexpect(corpo.usuario).to.not.have.property('senha_hash');",
+      "requestId": "req_login_estagiario",
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": 200
+    },
+    {
+      "_id": "ut_login_gestor",
+      "_type": "unit_test",
+      "parentId": "uts_auth",
+      "name": "Login gestor",
+      "code": "const resposta = await insomnia.send();\nexpect(resposta.status).to.equal(200);\nconst corpo = JSON.parse(resposta.data);\nexpect(corpo.accessToken).to.be.a('string');\nexpect(corpo.refreshToken).to.be.a('string');\nexpect(corpo.usuario.perfil).to.equal('GESTOR');\nexpect(corpo.usuario).to.not.have.property('senha_hash');",
+      "requestId": "req_login_gestor",
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": 300
+    },
+    {
+      "_id": "ut_login_errado",
+      "_type": "unit_test",
+      "parentId": "uts_auth",
+      "name": "Login com senha errada",
+      "code": "const resposta = await insomnia.send();\nexpect(resposta.status).to.equal(401);\nconst corpo = JSON.parse(resposta.data);\nexpect(corpo.erro).to.equal('E-mail ou senha inválidos.');",
+      "requestId": "req_login_errado",
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": 400
+    },
+    {
+      "_id": "ut_login_invalido",
+      "_type": "unit_test",
+      "parentId": "uts_auth",
+      "name": "Login com corpo inválido",
+      "code": "const resposta = await insomnia.send();\nexpect(resposta.status).to.equal(400);",
+      "requestId": "req_login_invalido",
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": 500
+    },
+    {
+      "_id": "ut_sem_token",
+      "_type": "unit_test",
+      "parentId": "uts_auth",
+      "name": "Rota protegida sem token",
+      "code": "const resposta = await insomnia.send();\nexpect(resposta.status).to.equal(401);",
+      "requestId": "req_sem_token",
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": 600
+    },
+    {
+      "_id": "ut_token_falso",
+      "_type": "unit_test",
+      "parentId": "uts_auth",
+      "name": "Rota protegida com token falso",
+      "code": "const resposta = await insomnia.send();\nexpect(resposta.status).to.equal(401);",
+      "requestId": "req_token_falso",
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": 700
+    },
+    {
+      "_id": "ut_eu",
+      "_type": "unit_test",
+      "parentId": "uts_auth",
+      "name": "Quem sou eu (analista)",
+      "code": "const resposta = await insomnia.send();\nexpect(resposta.status).to.equal(200);\nconst corpo = JSON.parse(resposta.data);\nexpect(corpo.perfil).to.equal('ANALISTA');\nexpect(corpo.permissoes).to.include('movimentacoes:editar');",
+      "requestId": "req_eu",
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": 800
+    },
+    {
+      "_id": "ut_refresh",
+      "_type": "unit_test",
+      "parentId": "uts_auth",
+      "name": "Renovar token (analista)",
+      "code": "const resposta = await insomnia.send();\nexpect(resposta.status).to.equal(200);\nconst corpo = JSON.parse(resposta.data);\nexpect(corpo.accessToken).to.be.a('string');",
+      "requestId": "req_refresh",
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": 900
+    },
+    {
+      "_id": "ut_logout",
+      "_type": "unit_test",
+      "parentId": "uts_auth",
+      "name": "Logout (analista)",
+      "code": "const resposta = await insomnia.send();\nexpect(resposta.status).to.equal(204);",
+      "requestId": "req_logout",
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": 1000
+    },
+    {
+      "_id": "ut_senha_errada",
+      "_type": "unit_test",
+      "parentId": "uts_auth",
+      "name": "Trocar senha com senha atual errada",
+      "code": "const resposta = await insomnia.send();\nexpect(resposta.status).to.equal(400);",
+      "requestId": "req_senha_errada",
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": 1100
+    },
+    {
+      "_id": "uts_analista",
+      "_type": "unit_test_suite",
+      "parentId": "wrk_ofx",
+      "name": "Analista fiscal",
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": 300
+    },
+    {
+      "_id": "ut_a_categorias",
+      "_type": "unit_test",
+      "parentId": "uts_analista",
+      "name": "Listar categorias",
+      "code": "const resposta = await insomnia.send();\nexpect(resposta.status).to.equal(200);\nconst corpo = JSON.parse(resposta.data);\nexpect(corpo).to.include('Aluguel');",
+      "requestId": "req_a_categorias",
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": 100
+    },
+    {
+      "_id": "ut_a_preview",
+      "_type": "unit_test",
+      "parentId": "uts_analista",
+      "name": "Importar - prévia (extrato_completo)",
+      "code": "const resposta = await insomnia.send();\nexpect(resposta.status).to.equal(200);\nconst corpo = JSON.parse(resposta.data);\nexpect(corpo).to.be.an('array').that.is.not.empty;\nexpect(corpo[0]).to.have.property('duplicada');",
+      "requestId": "req_a_preview",
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": 200
+    },
+    {
+      "_id": "ut_a_importar",
+      "_type": "unit_test",
+      "parentId": "uts_analista",
+      "name": "Importar OFX (extrato_completo)",
+      "code": "const resposta = await insomnia.send();\nexpect(resposta.status).to.equal(201);\nconst corpo = JSON.parse(resposta.data);\nexpect(corpo).to.have.property('inseridas');\nexpect(corpo).to.have.property('duplicadas');",
+      "requestId": "req_a_importar",
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": 300
+    },
+    {
+      "_id": "ut_a_importar_de_novo",
+      "_type": "unit_test",
+      "parentId": "uts_analista",
+      "name": "Importar o mesmo OFX de novo (tudo duplicado)",
+      "code": "const resposta = await insomnia.send();\nexpect(resposta.status).to.equal(201);\nconst corpo = JSON.parse(resposta.data);\nexpect(corpo.inseridas).to.equal(0);",
+      "requestId": "req_a_importar_de_novo",
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": 400
+    },
+    {
+      "_id": "ut_a_listar",
+      "_type": "unit_test",
+      "parentId": "uts_analista",
+      "name": "Listar movimentações",
+      "code": "const resposta = await insomnia.send();\nexpect(resposta.status).to.equal(200);\nconst corpo = JSON.parse(resposta.data);\nexpect(corpo).to.be.an('array').that.is.not.empty;",
+      "requestId": "req_a_listar",
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": 500
+    },
+    {
+      "_id": "ut_a_filtrar",
+      "_type": "unit_test",
+      "parentId": "uts_analista",
+      "name": "Listar movimentações filtrando (busca + categoria)",
+      "code": "const resposta = await insomnia.send();\nexpect(resposta.status).to.equal(200);",
+      "requestId": "req_a_filtrar",
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": 600
+    },
+    {
+      "_id": "ut_a_lancar",
+      "_type": "unit_test",
+      "parentId": "uts_analista",
+      "name": "Lançar movimentação manual",
+      "code": "const resposta = await insomnia.send();\nexpect(resposta.status).to.equal(201);\nconst corpo = JSON.parse(resposta.data);\nexpect(corpo.categoria).to.equal('Material de escritório');",
+      "requestId": "req_a_lancar",
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": 700
+    },
+    {
+      "_id": "ut_a_alterar",
+      "_type": "unit_test",
+      "parentId": "uts_analista",
+      "name": "Alterar categoria da conta lançada",
+      "code": "const resposta = await insomnia.send();\nexpect(resposta.status).to.equal(200);\nconst corpo = JSON.parse(resposta.data);\nexpect(corpo.categoria).to.equal('Outros');",
+      "requestId": "req_a_alterar",
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": 800
+    },
+    {
+      "_id": "ut_a_alterar_invalida",
+      "_type": "unit_test",
+      "parentId": "uts_analista",
+      "name": "Alterar com categoria inválida",
+      "code": "const resposta = await insomnia.send();\nexpect(resposta.status).to.equal(400);",
+      "requestId": "req_a_alterar_invalida",
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": 900
+    },
+    {
+      "_id": "ut_a_alterar_404",
+      "_type": "unit_test",
+      "parentId": "uts_analista",
+      "name": "Alterar conta que não existe",
+      "code": "const resposta = await insomnia.send();\nexpect(resposta.status).to.equal(404);",
+      "requestId": "req_a_alterar_404",
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": 1000
+    },
+    {
+      "_id": "ut_a_auto",
+      "_type": "unit_test",
+      "parentId": "uts_analista",
+      "name": "Classificar automaticamente",
+      "code": "const resposta = await insomnia.send();\nexpect(resposta.status).to.equal(200);\nconst corpo = JSON.parse(resposta.data);\nexpect(corpo).to.have.property('atualizadas');",
+      "requestId": "req_a_auto",
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": 1100
+    },
+    {
+      "_id": "ut_a_comentar",
+      "_type": "unit_test",
+      "parentId": "uts_analista",
+      "name": "Comentar a conta lançada",
+      "code": "const resposta = await insomnia.send();\nexpect(resposta.status).to.equal(201);\nconst corpo = JSON.parse(resposta.data);\nexpect(corpo.texto).to.contain('nota fiscal');",
+      "requestId": "req_a_comentar",
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": 1200
+    },
+    {
+      "_id": "ut_a_comentarios",
+      "_type": "unit_test",
+      "parentId": "uts_analista",
+      "name": "Listar comentários da conta",
+      "code": "const resposta = await insomnia.send();\nexpect(resposta.status).to.equal(200);\nconst corpo = JSON.parse(resposta.data);\nexpect(corpo).to.be.an('array').that.is.not.empty;",
+      "requestId": "req_a_comentarios",
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": 1300
+    },
+    {
+      "_id": "ut_a_comentario_vazio",
+      "_type": "unit_test",
+      "parentId": "uts_analista",
+      "name": "Comentar com texto vazio",
+      "code": "const resposta = await insomnia.send();\nexpect(resposta.status).to.equal(400);",
+      "requestId": "req_a_comentario_vazio",
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": 1400
+    },
+    {
+      "_id": "ut_a_apagar_comentario",
+      "_type": "unit_test",
+      "parentId": "uts_analista",
+      "name": "Apagar o próprio comentário",
+      "code": "const resposta = await insomnia.send();\nexpect(resposta.status).to.equal(204);",
+      "requestId": "req_a_apagar_comentario",
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": 1500
+    },
+    {
+      "_id": "ut_a_resumo",
+      "_type": "unit_test",
+      "parentId": "uts_analista",
+      "name": "Painel de análise (resumo)",
+      "code": "const resposta = await insomnia.send();\nexpect(resposta.status).to.equal(200);\nconst corpo = JSON.parse(resposta.data);\nexpect(corpo).to.have.property('entradas');\nexpect(corpo.por_categoria).to.be.an('array');",
+      "requestId": "req_a_resumo",
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": 1600
+    },
+    {
+      "_id": "ut_a_resumo_periodo",
+      "_type": "unit_test",
+      "parentId": "uts_analista",
+      "name": "Painel de análise filtrado por período",
+      "code": "const resposta = await insomnia.send();\nexpect(resposta.status).to.equal(200);",
+      "requestId": "req_a_resumo_periodo",
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": 1700
+    },
+    {
+      "_id": "ut_a_export_csv",
+      "_type": "unit_test",
+      "parentId": "uts_analista",
+      "name": "Exportar .csv",
+      "code": "const resposta = await insomnia.send();\nexpect(resposta.status).to.equal(200);",
+      "requestId": "req_a_export_csv",
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": 1800
+    },
+    {
+      "_id": "ut_a_export_xlsx",
+      "_type": "unit_test",
+      "parentId": "uts_analista",
+      "name": "Exportar .xlsx",
+      "code": "const resposta = await insomnia.send();\nexpect(resposta.status).to.equal(200);",
+      "requestId": "req_a_export_xlsx",
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": 1900
+    },
+    {
+      "_id": "ut_a_export_txt",
+      "_type": "unit_test",
+      "parentId": "uts_analista",
+      "name": "Exportar .txt",
+      "code": "const resposta = await insomnia.send();\nexpect(resposta.status).to.equal(200);",
+      "requestId": "req_a_export_txt",
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": 2000
+    },
+    {
+      "_id": "ut_a_export_ofx",
+      "_type": "unit_test",
+      "parentId": "uts_analista",
+      "name": "Exportar .ofx",
+      "code": "const resposta = await insomnia.send();\nexpect(resposta.status).to.equal(200);",
+      "requestId": "req_a_export_ofx",
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": 2100
+    },
+    {
+      "_id": "ut_a_apagar",
+      "_type": "unit_test",
+      "parentId": "uts_analista",
+      "name": "Apagar a conta lançada",
+      "code": "const resposta = await insomnia.send();\nexpect(resposta.status).to.equal(204);",
+      "requestId": "req_a_apagar",
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": 2200
+    },
+    {
+      "_id": "ut_a_tarefas",
+      "_type": "unit_test",
+      "parentId": "uts_analista",
+      "name": "Minhas tarefas",
+      "code": "const resposta = await insomnia.send();\nexpect(resposta.status).to.equal(200);",
+      "requestId": "req_a_tarefas",
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": 2300
+    },
+    {
+      "_id": "uts_estagiario",
+      "_type": "unit_test_suite",
+      "parentId": "wrk_ofx",
+      "name": "Estagiário (acessos e bloqueios)",
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": 400
+    },
+    {
+      "_id": "ut_e_importar",
+      "_type": "unit_test",
+      "parentId": "uts_estagiario",
+      "name": "Importar OFX (extrato_simples)",
+      "code": "const resposta = await insomnia.send();\nexpect(resposta.status).to.equal(201);",
+      "requestId": "req_e_importar",
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": 100
+    },
+    {
+      "_id": "ut_e_lancar",
+      "_type": "unit_test",
+      "parentId": "uts_estagiario",
+      "name": "Lançar movimentação manual",
+      "code": "const resposta = await insomnia.send();\nexpect(resposta.status).to.equal(201);",
+      "requestId": "req_e_lancar",
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": 200
+    },
+    {
+      "_id": "ut_e_listar",
+      "_type": "unit_test",
+      "parentId": "uts_estagiario",
+      "name": "Listar movimentações",
+      "code": "const resposta = await insomnia.send();\nexpect(resposta.status).to.equal(200);",
+      "requestId": "req_e_listar",
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": 300
+    },
+    {
+      "_id": "ut_e_resumo",
+      "_type": "unit_test",
+      "parentId": "uts_estagiario",
+      "name": "Ver gráficos/resumo (PROIBIDO)",
+      "code": "const resposta = await insomnia.send();\nexpect(resposta.status).to.equal(403);\nconst corpo = JSON.parse(resposta.data);\nexpect(corpo.erro).to.be.a('string');",
+      "requestId": "req_e_resumo",
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": 400
+    },
+    {
+      "_id": "ut_e_exportar",
+      "_type": "unit_test",
+      "parentId": "uts_estagiario",
+      "name": "Tirar relatório CSV (PROIBIDO)",
+      "code": "const resposta = await insomnia.send();\nexpect(resposta.status).to.equal(403);",
+      "requestId": "req_e_exportar",
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": 500
+    },
+    {
+      "_id": "ut_e_alterar",
+      "_type": "unit_test",
+      "parentId": "uts_estagiario",
+      "name": "Alterar categoria (PROIBIDO)",
+      "code": "const resposta = await insomnia.send();\nexpect(resposta.status).to.equal(403);",
+      "requestId": "req_e_alterar",
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": 600
+    },
+    {
+      "_id": "ut_e_apagar_tudo",
+      "_type": "unit_test",
+      "parentId": "uts_estagiario",
+      "name": "Limpar tabela (PROIBIDO)",
+      "code": "const resposta = await insomnia.send();\nexpect(resposta.status).to.equal(403);",
+      "requestId": "req_e_apagar_tudo",
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": 700
+    },
+    {
+      "_id": "ut_e_auto",
+      "_type": "unit_test",
+      "parentId": "uts_estagiario",
+      "name": "Classificar automaticamente (PROIBIDO)",
+      "code": "const resposta = await insomnia.send();\nexpect(resposta.status).to.equal(403);",
+      "requestId": "req_e_auto",
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": 800
+    },
+    {
+      "_id": "ut_e_comentarios",
+      "_type": "unit_test",
+      "parentId": "uts_estagiario",
+      "name": "Ler comentários (PROIBIDO)",
+      "code": "const resposta = await insomnia.send();\nexpect(resposta.status).to.equal(403);",
+      "requestId": "req_e_comentarios",
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": 900
+    },
+    {
+      "_id": "ut_e_criar_tarefa",
+      "_type": "unit_test",
+      "parentId": "uts_estagiario",
+      "name": "Criar tarefa (PROIBIDO)",
+      "code": "const resposta = await insomnia.send();\nexpect(resposta.status).to.equal(403);",
+      "requestId": "req_e_criar_tarefa",
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": 1000
+    },
+    {
+      "_id": "ut_e_usuarios",
+      "_type": "unit_test",
+      "parentId": "uts_estagiario",
+      "name": "Listar usuários (PROIBIDO)",
+      "code": "const resposta = await insomnia.send();\nexpect(resposta.status).to.equal(403);",
+      "requestId": "req_e_usuarios",
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": 1100
+    },
+    {
+      "_id": "ut_e_tarefas",
+      "_type": "unit_test",
+      "parentId": "uts_estagiario",
+      "name": "Minhas tarefas",
+      "code": "const resposta = await insomnia.send();\nexpect(resposta.status).to.equal(200);",
+      "requestId": "req_e_tarefas",
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": 1200
+    },
+    {
+      "_id": "uts_gestor",
+      "_type": "unit_test_suite",
+      "parentId": "wrk_ofx",
+      "name": "Gestor (acessos, bloqueios e tarefas)",
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": 500
+    },
+    {
+      "_id": "ut_g_resumo",
+      "_type": "unit_test",
+      "parentId": "uts_gestor",
+      "name": "Painel de análise (resumo)",
+      "code": "const resposta = await insomnia.send();\nexpect(resposta.status).to.equal(200);\nconst corpo = JSON.parse(resposta.data);\nexpect(corpo).to.have.property('saldo');",
+      "requestId": "req_g_resumo",
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": 100
+    },
+    {
+      "_id": "ut_g_export_csv",
+      "_type": "unit_test",
+      "parentId": "uts_gestor",
+      "name": "Exportar .csv",
+      "code": "const resposta = await insomnia.send();\nexpect(resposta.status).to.equal(200);",
+      "requestId": "req_g_export_csv",
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": 200
+    },
+    {
+      "_id": "ut_g_export_xlsx",
+      "_type": "unit_test",
+      "parentId": "uts_gestor",
+      "name": "Exportar .xlsx",
+      "code": "const resposta = await insomnia.send();\nexpect(resposta.status).to.equal(200);",
+      "requestId": "req_g_export_xlsx",
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": 300
+    },
+    {
+      "_id": "ut_g_listar",
+      "_type": "unit_test",
+      "parentId": "uts_gestor",
+      "name": "Listar movimentações",
+      "code": "const resposta = await insomnia.send();\nexpect(resposta.status).to.equal(200);",
+      "requestId": "req_g_listar",
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": 400
+    },
+    {
+      "_id": "ut_g_comentarios",
+      "_type": "unit_test",
+      "parentId": "uts_gestor",
+      "name": "Ler comentários de uma conta",
+      "code": "const resposta = await insomnia.send();\nexpect(resposta.status).to.equal(200);",
+      "requestId": "req_g_comentarios",
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": 500
+    },
+    {
+      "_id": "ut_g_tarefa",
+      "_type": "unit_test",
+      "parentId": "uts_gestor",
+      "name": "Delegar balanço ao analista",
+      "code": "const resposta = await insomnia.send();\nexpect(resposta.status).to.equal(201);\nconst corpo = JSON.parse(resposta.data);\nexpect(corpo.status).to.equal('PENDENTE');\nexpect(corpo.tipo).to.equal('BALANCO');",
+      "requestId": "req_g_tarefa",
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": 600
+    },
+    {
+      "_id": "ut_g_tarefas",
+      "_type": "unit_test",
+      "parentId": "uts_gestor",
+      "name": "Listar tarefas da equipe",
+      "code": "const resposta = await insomnia.send();\nexpect(resposta.status).to.equal(200);\nconst corpo = JSON.parse(resposta.data);\nexpect(corpo).to.be.an('array').that.is.not.empty;",
+      "requestId": "req_g_tarefas",
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": 700
+    },
+    {
+      "_id": "ut_g_tarefa_analista_ve",
+      "_type": "unit_test",
+      "parentId": "uts_gestor",
+      "name": "Analista vê a tarefa delegada",
+      "code": "const resposta = await insomnia.send();\nexpect(resposta.status).to.equal(200);\nconst corpo = JSON.parse(resposta.data);\nexpect(corpo.some(t => t.titulo === 'Balanço de setembro')).to.equal(true);",
+      "requestId": "req_g_tarefa_analista_ve",
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": 800
+    },
+    {
+      "_id": "ut_g_tarefa_estagiario_barrado",
+      "_type": "unit_test",
+      "parentId": "uts_gestor",
+      "name": "Estagiário tenta concluir tarefa alheia (PROIBIDO)",
+      "code": "const resposta = await insomnia.send();\nexpect(resposta.status).to.equal(403);",
+      "requestId": "req_g_tarefa_estagiario_barrado",
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": 900
+    },
+    {
+      "_id": "ut_g_tarefa_andamento",
+      "_type": "unit_test",
+      "parentId": "uts_gestor",
+      "name": "Analista inicia a tarefa",
+      "code": "const resposta = await insomnia.send();\nexpect(resposta.status).to.equal(200);\nconst corpo = JSON.parse(resposta.data);\nexpect(corpo.status).to.equal('EM_ANDAMENTO');",
+      "requestId": "req_g_tarefa_andamento",
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": 1000
+    },
+    {
+      "_id": "ut_g_tarefa_concluida",
+      "_type": "unit_test",
+      "parentId": "uts_gestor",
+      "name": "Analista conclui a tarefa",
+      "code": "const resposta = await insomnia.send();\nexpect(resposta.status).to.equal(200);\nconst corpo = JSON.parse(resposta.data);\nexpect(corpo.concluido_em).to.be.a('string');",
+      "requestId": "req_g_tarefa_concluida",
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": 1100
+    },
+    {
+      "_id": "ut_g_tarefa_excluir_analista",
+      "_type": "unit_test",
+      "parentId": "uts_gestor",
+      "name": "Analista tenta excluir tarefa (PROIBIDO)",
+      "code": "const resposta = await insomnia.send();\nexpect(resposta.status).to.equal(403);",
+      "requestId": "req_g_tarefa_excluir_analista",
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": 1200
+    },
+    {
+      "_id": "ut_g_tarefa_excluir",
+      "_type": "unit_test",
+      "parentId": "uts_gestor",
+      "name": "Gestor exclui a tarefa",
+      "code": "const resposta = await insomnia.send();\nexpect(resposta.status).to.equal(204);",
+      "requestId": "req_g_tarefa_excluir",
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": 1300
+    },
+    {
+      "_id": "ut_g_usuarios",
+      "_type": "unit_test",
+      "parentId": "uts_gestor",
+      "name": "Listar usuários",
+      "code": "const resposta = await insomnia.send();\nexpect(resposta.status).to.equal(200);\nconst corpo = JSON.parse(resposta.data);\nexpect(corpo).to.be.an('array');\nexpect(corpo[0]).to.not.have.property('senha_hash');",
+      "requestId": "req_g_usuarios",
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": 1400
+    },
+    {
+      "_id": "ut_g_novo_usuario",
+      "_type": "unit_test",
+      "parentId": "uts_gestor",
+      "name": "Cadastrar usuário (estagiário)",
+      "code": "const resposta = await insomnia.send();\nexpect(resposta.status).to.equal(201);",
+      "requestId": "req_g_novo_usuario",
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": 1500
+    },
+    {
+      "_id": "ut_g_usuario_perfil",
+      "_type": "unit_test",
+      "parentId": "uts_gestor",
+      "name": "Promover usuário a analista",
+      "code": "const resposta = await insomnia.send();\nexpect(resposta.status).to.equal(200);\nconst corpo = JSON.parse(resposta.data);\nexpect(corpo.perfil).to.equal('ANALISTA');",
+      "requestId": "req_g_usuario_perfil",
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": 1600
+    },
+    {
+      "_id": "ut_g_usuario_senha",
+      "_type": "unit_test",
+      "parentId": "uts_gestor",
+      "name": "Redefinir senha do usuário",
+      "code": "const resposta = await insomnia.send();\nexpect(resposta.status).to.equal(200);",
+      "requestId": "req_g_usuario_senha",
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": 1700
+    },
+    {
+      "_id": "ut_g_usuario_desativar",
+      "_type": "unit_test",
+      "parentId": "uts_gestor",
+      "name": "Desativar usuário",
+      "code": "const resposta = await insomnia.send();\nexpect(resposta.status).to.equal(200);",
+      "requestId": "req_g_usuario_desativar",
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": 1800
+    },
+    {
+      "_id": "ut_g_auto_desativar",
+      "_type": "unit_test",
+      "parentId": "uts_gestor",
+      "name": "Gestor tenta se desativar",
+      "code": "const resposta = await insomnia.send();\nexpect(resposta.status).to.equal(400);",
+      "requestId": "req_g_auto_desativar",
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": 1900
+    },
+    {
+      "_id": "ut_g_importar",
+      "_type": "unit_test",
+      "parentId": "uts_gestor",
+      "name": "Importar OFX (PROIBIDO)",
+      "code": "const resposta = await insomnia.send();\nexpect(resposta.status).to.equal(403);",
+      "requestId": "req_g_importar",
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": 2000
+    },
+    {
+      "_id": "ut_g_lancar",
+      "_type": "unit_test",
+      "parentId": "uts_gestor",
+      "name": "Lançar movimentação (PROIBIDO)",
+      "code": "const resposta = await insomnia.send();\nexpect(resposta.status).to.equal(403);",
+      "requestId": "req_g_lancar",
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": 2100
+    },
+    {
+      "_id": "ut_g_alterar",
+      "_type": "unit_test",
+      "parentId": "uts_gestor",
+      "name": "Alterar categoria (PROIBIDO)",
+      "code": "const resposta = await insomnia.send();\nexpect(resposta.status).to.equal(403);",
+      "requestId": "req_g_alterar",
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": 2200
+    },
+    {
+      "_id": "ut_g_comentar",
+      "_type": "unit_test",
+      "parentId": "uts_gestor",
+      "name": "Comentar conta (PROIBIDO)",
+      "code": "const resposta = await insomnia.send();\nexpect(resposta.status).to.equal(403);",
+      "requestId": "req_g_comentar",
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": 2300
+    },
+    {
+      "_id": "uts_erros",
+      "_type": "unit_test_suite",
+      "parentId": "wrk_ofx",
+      "name": "Validação e erros",
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": 600
+    },
+    {
+      "_id": "ut_x_formato",
+      "_type": "unit_test",
+      "parentId": "uts_erros",
+      "name": "Exportar formato inválido",
+      "code": "const resposta = await insomnia.send();\nexpect(resposta.status).to.equal(400);",
+      "requestId": "req_x_formato",
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": 100
+    },
+    {
+      "_id": "ut_x_arquivo_ruim",
+      "_type": "unit_test",
+      "parentId": "uts_erros",
+      "name": "Importar arquivo que não é OFX",
+      "code": "const resposta = await insomnia.send();\nexpect(resposta.status).to.equal(422);",
+      "requestId": "req_x_arquivo_ruim",
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": 200
+    },
+    {
+      "_id": "ut_x_sem_arquivo",
+      "_type": "unit_test",
+      "parentId": "uts_erros",
+      "name": "Importar sem enviar arquivo",
+      "code": "const resposta = await insomnia.send();\nexpect(resposta.status).to.equal(400);",
+      "requestId": "req_x_sem_arquivo",
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": 300
+    },
+    {
+      "_id": "ut_x_valor_zero",
+      "_type": "unit_test",
+      "parentId": "uts_erros",
+      "name": "Lançar com valor zero",
+      "code": "const resposta = await insomnia.send();\nexpect(resposta.status).to.equal(400);",
+      "requestId": "req_x_valor_zero",
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": 400
+    },
+    {
+      "_id": "ut_x_data_ruim",
+      "_type": "unit_test",
+      "parentId": "uts_erros",
+      "name": "Lançar com data inválida",
+      "code": "const resposta = await insomnia.send();\nexpect(resposta.status).to.equal(400);",
+      "requestId": "req_x_data_ruim",
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": 500
+    },
+    {
+      "_id": "ut_x_id_ruim",
+      "_type": "unit_test",
+      "parentId": "uts_erros",
+      "name": "Id que não é número",
+      "code": "const resposta = await insomnia.send();\nexpect(resposta.status).to.equal(400);",
+      "requestId": "req_x_id_ruim",
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": 600
+    },
+    {
+      "_id": "ut_x_json_ruim",
+      "_type": "unit_test",
+      "parentId": "uts_erros",
+      "name": "JSON quebrado",
+      "code": "const resposta = await insomnia.send();\nexpect(resposta.status).to.equal(400);",
+      "requestId": "req_x_json_ruim",
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": 700
+    },
+    {
+      "_id": "ut_x_rota",
+      "_type": "unit_test",
+      "parentId": "uts_erros",
+      "name": "Rota que não existe",
+      "code": "const resposta = await insomnia.send();\nexpect(resposta.status).to.equal(404);",
+      "requestId": "req_x_rota",
+      "created": 1760000000000,
+      "modified": 1760000000000,
+      "metaSortKey": 800
+    }
+  ]
+}

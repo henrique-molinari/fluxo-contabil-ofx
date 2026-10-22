@@ -1,135 +1,150 @@
-# projeto-ofx
+<div align="center">
 
-Mini ERP financeiro que lê extratos bancários no formato **OFX**, guarda as movimentações em um banco **PostgreSQL**, classifica cada uma em categorias e mostra tudo em um painel com gráficos. No fim, dá para exportar os dados tratados em CSV, planilha Excel, TXT ou até em um novo OFX.
+# 💸 Fluxo Contábil
 
-O projeto nasceu como uma atividade simples de leitura de arquivo e foi crescendo em etapas, até virar uma aplicação completa com backend em Python e frontend em React.
+**Mini ERP financeiro que transforma extratos bancários OFX em informação: importa, classifica, analisa e exporta.**
 
----
+![Node.js](https://img.shields.io/badge/Node.js-20+-339933?logo=node.js&logoColor=white)
+![Express](https://img.shields.io/badge/Express-4-000000?logo=express&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?logo=postgresql&logoColor=white)
+![React](https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=black)
+![Vite](https://img.shields.io/badge/Vite-5-646CFF?logo=vite&logoColor=white)
+![JWT](https://img.shields.io/badge/Auth-JWT%20%2B%20Refresh-orange)
+![Licença](https://img.shields.io/badge/uso-educacional-lightgrey)
 
-## Sumário
-
-- [O que o projeto faz](#o-que-o-projeto-faz)
-- [Tecnologias](#tecnologias)
-- [Estrutura de pastas](#estrutura-de-pastas)
-- [Como rodar](#como-rodar)
-- [Etapas da atividade](#etapas-da-atividade)
-- [Classificação automática](#classificação-automática)
-- [API](#api)
-- [Exportação](#exportação)
-- [Arquivos de exemplo](#arquivos-de-exemplo)
-- [Decisões do projeto](#decisões-do-projeto)
-- [Autor](#autor)
+</div>
 
 ---
 
-## O que o projeto faz
+## ✨ O que o sistema faz
 
-O frontend é dividido em quatro módulos, que seguem o caminho natural dos dados:
+- 📥 **Importa extratos OFX** (formato SGML dos bancos brasileiros) com **prévia antes de gravar** e detecção de contas duplicadas.
+- 🏷️ **Classifica automaticamente** cada movimentação em categorias (aluguel, energia, folha...) e permite ajuste manual.
+- 📊 **Painel de análise** com totais, gastos por categoria (pizza, rosca ou barras), comparação mensal e evolução do saldo.
+- 📤 **Exporta** os dados tratados em **CSV, Excel (.xlsx), TXT ou OFX**.
+- 🔐 **Login com 3 perfis** (analista fiscal, estagiário e gestor), cada um com permissões diferentes.
+- 💬 **Comentários** do analista em cada conta e ✅ **tarefas delegadas** pelo gestor (ex.: "preciso do balanço de setembro").
+- 🛡️ **Segurança de verdade no backend**: JWT de curta duração, refresh token com rotação, bcrypt, validação com zod, limite de tentativas de login e proteção contra CSV injection.
 
-| Módulo | Para que serve |
+## 🧰 Tecnologias
+
+| Camada | Tecnologias |
 | --- | --- |
-| **Painel de análise** | Totais de entradas, saídas e saldo; gastos por categoria; comparação mês a mês; evolução do saldo. Os gráficos podem trocar de tipo (rosca, barras, linha). |
-| **Importação** | Envia um arquivo `.ofx`, mostra uma prévia do que será gravado (já avisando o que é duplicado) e só depois grava no banco. |
-| **Tratamento** | Lista as movimentações, permite trocar a categoria de cada uma e rodar a classificação automática. |
-| **Exportação** | Baixa os dados em `csv`, `xlsx`, `txt` ou `ofx`. |
+| Backend | Node.js 20, Express 4, `pg`, `zod`, `jsonwebtoken`, `bcryptjs`, `multer`, `exceljs`, `helmet`, `cors`, `express-rate-limit` |
+| Banco | PostgreSQL (migrações SQL numeradas) |
+| Frontend | React 18, Vite 5, Recharts, Lucide Icons |
+| Testes | `node:test` (unitários e integração) e coleção do Insomnia com 78 testes |
+| Documentação | Diagramas PlantUML (classes e DER) |
 
-## Tecnologias
+## 🏗️ Arquitetura
 
-**Backend**
+```mermaid
+flowchart LR
+    U[Navegador<br/>React + Vite] -- "/api (proxy)" --> A[API Express]
+    A --> M1[auth / usuarios]
+    A --> M2[importacao]
+    A --> M3[tratamento / comentarios]
+    A --> M4[analise / exportacao]
+    A --> M5[tarefas]
+    M1 & M2 & M3 & M4 & M5 --> DB[(PostgreSQL)]
+    M2 -. "lê" .-> OFX[[arquivo .ofx]]
+    M4 -. "gera" .-> OUT[[CSV / XLSX / TXT / OFX]]
+```
 
-- Python 3
-- Flask + Flask-CORS (API REST)
-- ofxparse (leitura do OFX)
-- psycopg2 (conexão com o PostgreSQL)
-- python-dotenv (variáveis de ambiente)
-- openpyxl (geração de planilhas)
+Cada requisição passa por **autenticar** (quem é você? → 401) e **autorizar** (o que você pode fazer? → 403). O backend e o frontend são organizados **por módulo**, com os mesmos nomes dos dois lados.
 
-**Banco de dados**
+---
 
-- PostgreSQL hospedado no [Neon](https://neon.tech)
+## Perfis de usuário
 
-**Frontend**
+| | Analista fiscal | Estagiário | Gestor (head) |
+| --- | :---: | :---: | :---: |
+| Importar OFX / lançar conta manual | ✅ | ✅ | ❌ |
+| Ver lista de contas | ✅ | ✅ | ✅ |
+| Alterar categoria / classificar | ✅ | ❌ | ❌ |
+| Escrever comentários nas contas | ✅ | ❌ | ❌ |
+| Ler comentários | ✅ | ❌ | ✅ |
+| Ver gráficos e análise | ✅ | ❌ | ✅ |
+| Exportar relatórios | ✅ | ❌ | ✅ |
+| Delegar tarefas (ex.: pedir balanço) | ❌ | ❌ | ✅ |
+| Ver / atualizar as próprias tarefas | ✅ | ✅ | ✅ (vê todas) |
+| Gerenciar usuários | ❌ | ❌ | ✅ |
 
-- React 18 + Vite
-- Recharts (gráficos)
-- lucide-react (ícones)
+A tabela é definida em um único arquivo: [backend/src/config/permissoes.js](backend/src/config/permissoes.js).
 
 ## Estrutura de pastas
 
 ```
-projeto-ofx/
-├── main.py                 # Etapa 1: lê o OFX e imprime o extrato no terminal
-├── importar_postgres.py    # Etapa 2: grava as movimentações no PostgreSQL
-├── banco.py                # Conexão, regras de categoria e leitura do OFX (código compartilhado)
-├── api.py                  # Backend Flask usado pelo frontend
-├── extrato.ofx             # Extrato pequeno usado na atividade
-├── exemplos/               # Extratos de exemplo para testar a importação
-├── requirements.txt
-├── .env.example            # Modelo das variáveis de conexão com o banco
-└── frontend/
-    ├── index.html
-    ├── vite.config.js      # Proxy de /api para o backend
+fluxo-contabil/
+├── bd/                       # Banco de dados
+│   └── migracoes/            #   scripts SQL numerados (001_..., 002_...)
+├── backend/                  # API em Node.js + Express
+│   ├── scripts/              #   migrar.js e seed.js
+│   ├── test/                 #   testes automatizados
+│   └── src/
+│       ├── app.js, server.js
+│       ├── config/           #   env.js e permissoes.js
+│       ├── compartilhado/    #   db, erros e middlewares (autenticar, autorizar, validar)
+│       └── modulos/          #   uma pasta por módulo
+│           ├── auth/         #     login, refresh, logout, trocar senha
+│           ├── usuarios/     #     cadastro da equipe (gestor)
+│           ├── importacao/   #     leitor de OFX + prévia + importação
+│           ├── tratamento/   #     contas, categorias e classificação
+│           ├── comentarios/  #     comentários do analista
+│           ├── analise/      #     totais e gráficos
+│           ├── exportacao/   #     csv, xlsx, txt, ofx
+│           └── tarefas/      #     tarefas delegadas pelo gestor
+├── api/                      # Documentação e testes da API
+│   ├── insomnia/             #   coleção do Insomnia (78 requisições + testes)
+│   ├── exemplos/             #   extratos .ofx para testar a importação
+│   └── README.md             #   lista de rotas
+├── diagrama/                 # Diagramas PlantUML (classes.puml e der.puml)
+├── env/                      # Variáveis de ambiente
+│   └── .env.example          #   modelo (o .env de verdade não vai para o Git)
+└── frontend/                 # React 18 + Vite
     └── src/
-        ├── App.jsx         # Layout e menu lateral
-        ├── api.js          # Chamadas ao backend
-        ├── tema.js         # Cores dos gráficos
-        ├── pages/          # Analise, Importacao, Tratamento, Exportacao
-        └── components/     # Graficos, SeletorGrafico, Carregando
+        ├── App.jsx           #   menu filtrado pelas permissões do usuário
+        ├── compartilhado/    #   http.js (token), formatos, Carregando
+        └── modulos/          #   uma pasta por módulo (mesmos nomes do backend)
 ```
 
 ## Como rodar
 
-### Pré-requisitos
+**Pré-requisitos:** Node.js 20 ou superior e o PostgreSQL instalado (local ou na nuvem, como o [Neon](https://neon.tech)).
 
-- Python 3.10 ou superior
-- Node.js 18 ou superior
-- Um banco PostgreSQL (o projeto usa o plano gratuito do Neon)
+> ⚠️ Use um **banco só para este projeto** (ex.: `ofx_app`). As migrações criam as tabelas `usuarios`, `tarefas`, etc. e os testes de integração apagam dados, então nunca aponte o `.env` para o banco de outra aplicação.
 
-### 1. Clonar o repositório
+### Passo a passo
+
+**1. Criar o banco local** (uma vez só). No PowerShell, informe a senha do `postgres` quando pedir:
+
+```powershell
+& "C:\Program Files\PostgreSQL\18\bin\createdb.exe" -U postgres ofx_app
+```
+
+Ou, no pgAdmin: *Databases → Create → Database…* com o nome `ofx_app`.
+
+**2. Configurar as variáveis de ambiente**
 
 ```bash
-git clone https://github.com/henrique-molinari/projeto-ofx.git
-cd projeto-ofx
+cp env/.env.example env/.env
 ```
 
-### 2. Configurar o banco
+Edite o `env/.env`: `PGDATABASE=ofx_app`, `PGPASSWORD=<senha do seu postgres>` e `JWT_SEGREDO` (gere com `node -e "console.log(require('crypto').randomBytes(48).toString('hex'))"`). Os demais valores padrão (`PGHOST=localhost`, `PGPORT=5432`, `PGUSER=postgres`, `PGSSLMODE=prefer`) já servem para um banco local.
 
-Copie o modelo e preencha com os dados da sua conexão:
+**3. Subir o backend** (porta 3333)
 
 ```bash
-cp .env.example .env
+cd backend
+npm install
+npm run db:migrar       # cria as tabelas (bd/migracoes)
+npm run db:seed         # cria os 3 usuários de exemplo
+npm run dev
 ```
 
-```env
-PGHOST=seu-host.neon.tech
-PGPORT=5432
-PGDATABASE=neondb
-PGUSER=neondb_owner
-PGPASSWORD=sua_senha
-PGSSLMODE=require
-```
+Confira em `http://localhost:3333/api/saude`: deve responder `{"status":"ok"}`.
 
-O arquivo `.env` está no `.gitignore`, então a senha nunca vai para o repositório. A tabela, a coluna de categoria e o índice único são criados automaticamente na primeira conexão.
-
-### 3. Backend
-
-```bash
-python -m venv venv
-
-# Windows
-venv\Scripts\activate
-# Linux / macOS
-source venv/bin/activate
-
-pip install -r requirements.txt
-python api.py
-```
-
-A API sobe em `http://localhost:5000`. Para conferir, abra `http://localhost:5000/api/resumo`: deve aparecer um JSON com os totais. Se der erro de conexão, revise o `.env`.
-
-### 4. Frontend
-
-Em um segundo terminal:
+**4. Subir o frontend** (outro terminal, porta 5173)
 
 ```bash
 cd frontend
@@ -137,90 +152,90 @@ npm install
 npm run dev
 ```
 
-Abra `http://localhost:5173`. O Vite redireciona tudo que começa com `/api` para o backend, então não é preciso configurar CORS nem URLs.
+**5. Testar no navegador**
 
-### Rodando só os scripts da atividade
+1. Abra `http://localhost:5173` e entre como **analista** (`analista@ofx.com`).
+2. Vá em *Importação* e envie [api/exemplos/extrato_completo.ofx](api/exemplos/extrato_completo.ofx). Confirme a importação.
+3. Em *Tratamento*, veja as contas e altere uma categoria.
+4. Em *Análise* e *Exportação*, veja os gráficos e baixe um CSV/Excel.
+5. Saia e entre como **estagiário** (só importa e vê a lista) e como **gestor** (vê análise, exporta, delega tarefas e gerencia usuários). Cada menu aparece conforme as permissões do perfil.
+6. Teste também o arquivo inválido [api/exemplos/arquivo_invalido.txt](api/exemplos/arquivo_invalido.txt): deve ser recusado com mensagem de erro.
+
+Para testar a API sem o frontend, importe a coleção [api/insomnia/ofx-insomnia.json](api/insomnia/ofx-insomnia.json) no Insomnia. Os testes automatizados estão na seção [Testes](#testes).
+
+Abra `http://localhost:5173`. Usuários criados pelo `db:seed` (senha `Mudar@123`, ou o valor de `SEED_SENHA`):
+
+| Perfil | E-mail |
+| --- | --- |
+| Analista fiscal | `analista@ofx.com` |
+| Estagiário | `estagiario@ofx.com` |
+| Gestor | `gestor@ofx.com` |
+
+> Já usava a versão em Python? As migrações preservam a tabela `movimentacoes` existente, só acrescentam colunas novas.
+
+## Autenticação e autorização
+
+São duas etapas separadas, cada uma com seu middleware:
+
+1. **Autenticação (quem é você?)** — [`autenticar.js`](backend/src/compartilhado/middlewares/autenticar.js). Valida o JWT do cabeçalho `Authorization: Bearer ...` e carrega o usuário. Falhou = **401**.
+2. **Autorização (o que você pode fazer?)** — [`autorizar.js`](backend/src/compartilhado/middlewares/autorizar.js). Confere se o perfil tem a permissão que a rota exige, por exemplo `autorizar("analise:ler")`. Falhou = **403**.
+
+Detalhes do login:
+
+- **Access token** (JWT, 15 min) e **refresh token** (aleatório, 7 dias, guardado só como hash no banco).
+- O refresh token é **trocado a cada uso**; se um token já usado aparecer de novo, todas as sessões do usuário são encerradas.
+- Senhas com bcrypt; mesma resposta para "e-mail inexistente" e "senha errada"; limite de tentativas de login.
+- Desativar um usuário ou mudar o perfil dele vale **imediatamente** (o perfil é lido do banco a cada chamada).
+
+## Módulos do backend
+
+Cada pasta em `backend/src/modulos/` segue o mesmo padrão: `<modulo>.rotas.js` (e, quando precisa, `<modulo>.servico.js` com a regra de negócio). Para criar um módulo novo: crie a pasta, exporte um `Router` e registre-o em [app.js](backend/src/app.js).
+
+A lista completa de rotas e permissões está em [api/README.md](api/README.md).
+
+## Testes
 
 ```bash
-python main.py                # mostra o extrato no terminal
-python importar_postgres.py   # grava o extrato.ofx no PostgreSQL
+cd backend
+npm test                # unitários (sem banco): leitor de OFX, classificador, permissões, resumo
+npm run test:integracao # API ponta a ponta no PostgreSQL (veja a trava de segurança abaixo)
 ```
 
-## Etapas da atividade
+Os testes de integração **apagam movimentações e tarefas**, então só rodam se o nome do banco terminar em `_teste`:
 
-1. **Leitura do OFX** (`main.py`): abre o `extrato.ofx` com o ofxparse e mostra data, valor e descrição de cada transação, além do total de entradas, saídas e do saldo.
-2. **Gravação no PostgreSQL** (`importar_postgres.py`): salva cada movimentação na tabela `movimentacoes`, sem repetir transações.
-3. **Classificação**: cada movimentação recebe uma categoria a partir de regras sobre a descrição, e o usuário pode corrigir manualmente.
-4. **Interface web**: backend Flask e frontend React com painel, importação, tratamento e exportação.
+```bash
+PGDATABASE=ofx_teste npm run db:migrar && PGDATABASE=ofx_teste npm run test:integracao
+```
 
-### Tabela `movimentacoes`
-
-| Coluna | Tipo | Observação |
-| --- | --- | --- |
-| `id` | `SERIAL` | Chave primária |
-| `data_movimentacao` | `DATE` | |
-| `valor` | `NUMERIC(15,2)` | Positivo = entrada, negativo = saída |
-| `descricao` | `VARCHAR(255)` | |
-| `categoria` | `VARCHAR(50)` | Padrão: `Sem categoria` |
-
-Um **índice único** em `(data_movimentacao, valor, descricao)` impede que a mesma transação seja gravada duas vezes. Se você importar o mesmo arquivo de novo, as repetidas são ignoradas e o sistema informa quantas foram inseridas e quantas eram duplicadas.
+Também há a coleção do **Insomnia** em [api/insomnia/ofx-insomnia.json](api/insomnia/ofx-insomnia.json), com requisições organizadas por perfil e suítes de teste (aba *Test*). Veja [api/README.md](api/README.md).
 
 ## Classificação automática
 
-A descrição é convertida para maiúsculas e sem acentos, e depois comparada com palavras-chave:
+Se a descrição da conta (sem acento e em maiúsculas) contiver uma das palavras abaixo, ela recebe a categoria correspondente. O resto fica como **Sem categoria** até o analista classificar.
 
-| Categoria | Palavras-chave |
+| Categoria | Palavras |
 | --- | --- |
-| Receitas | `RECEBIMENTO`, `PAGAMENTO CLIENTE`, `PIX CLIENTE` |
-| Aluguel | `ALUGUEL` |
-| Energia | `ENERGIA` |
-| Internet | `INTERNET` |
-| Folha de pagamento | `FOLHA` |
-| Material de escritório | `MATERIAL` |
-| Equipamentos | `EQUIPAMENTOS` |
-| Veículo | `VEICULO`, `ESTACIONAMENTO` |
-| Assinaturas | `ASSINATURA` |
+| Receitas | RECEBIMENTO, PAGAMENTO CLIENTE, PIX CLIENTE |
+| Aluguel | ALUGUEL |
+| Energia | ENERGIA |
+| Internet | INTERNET |
+| Folha de pagamento | FOLHA |
+| Material de escritório | MATERIAL |
+| Equipamentos | EQUIPAMENTOS |
+| Veículo | VEICULO, ESTACIONAMENTO |
+| Assinaturas | ASSINATURA |
 
-O que não casar com nenhuma regra fica como **Sem categoria** e pode ser ajustado à mão no módulo de Tratamento. As categorias `Outros` e `Sem categoria` também podem ser escolhidas manualmente. Para criar uma regra nova, basta editar o dicionário `REGRAS` em [banco.py](banco.py).
+As regras ficam em [classificador.js](backend/src/modulos/tratamento/classificador.js). Outras categorias disponíveis para escolha manual: *Outros* e *Sem categoria*.
 
-## API
+## Diagramas
 
-| Método | Rota | Descrição |
-| --- | --- | --- |
-| `GET` | `/api/categorias` | Lista de categorias disponíveis |
-| `POST` | `/api/preview` | Lê o OFX enviado e devolve o que seria importado, sem gravar |
-| `POST` | `/api/importar` | Importa o OFX e devolve `{inseridas, duplicadas}` |
-| `GET` | `/api/movimentacoes` | Todas as movimentações, da mais recente para a mais antiga |
-| `PUT` | `/api/movimentacoes/<id>` | Altera a categoria de uma movimentação |
-| `POST` | `/api/classificar-automatico` | Aplica as regras em tudo que está sem categoria |
-| `DELETE` | `/api/movimentacoes` | Limpa a tabela (útil para refazer testes) |
-| `GET` | `/api/resumo` | Totais, gastos por categoria, resumo mensal e evolução do saldo |
-| `GET` | `/api/exportar/<formato>` | Baixa em `csv`, `xlsx`, `txt` ou `ofx` |
+Em [diagrama/](diagrama/) estão o **diagrama de classes** ([classes.puml](diagrama/classes.puml)) e o **DER** do banco ([der.puml](diagrama/der.puml)). Abra no VS Code com a extensão *PlantUML* ou cole o conteúdo em [plantuml.com](https://www.plantuml.com/plantuml).
 
-## Exportação
+## Segurança do repositório
 
-- **CSV**: separado por ponto e vírgula, valores com vírgula decimal e codificação UTF-8 com BOM, para abrir corretamente no Excel em português.
-- **XLSX**: planilha com cabeçalho e largura de colunas ajustada.
-- **TXT**: extrato em texto simples, alinhado em colunas.
-- **OFX**: arquivo no mesmo layout do extrato original, com caracteres especiais escapados, que pode ser importado de volta no sistema.
-
-## Arquivos de exemplo
-
-A pasta [exemplos/](exemplos) tem dois extratos para testar a importação:
-
-- `extrato_simples.ofx`: 15 transações, o mesmo usado no `main.py`.
-- `extrato_completo.ofx`: 149 transações entre janeiro e setembro de 2026, ideal para ver os gráficos do painel com bastante dado.
-
-## Decisões do projeto
-
-- **Código compartilhado em `banco.py`**: a leitura do OFX, a conexão e as regras de categoria ficam em um só lugar, usadas tanto pelo script de importação quanto pela API.
-- **Prévia antes de gravar**: a importação mostra o que vai entrar e o que já existe, evitando surpresas.
-- **Duplicidade resolvida no banco**: o índice único com `ON CONFLICT DO NOTHING` é mais seguro do que conferir no código.
-- **Erro de conexão legível**: no Windows em português, o psycopg2 pode falhar ao decodificar a mensagem do servidor; o `conectar()` trata isso e mostra o erro real.
-- **Segredos fora do Git**: credenciais ficam no `.env`, e o repositório só traz o `.env.example`.
+- `env/.env` (senhas e segredo do JWT) e `node_modules/` estão no `.gitignore`: **nunca** vão para o Git. Só o modelo [env/.env.example](env/.env.example) é versionado.
+- Os usuários de teste (`*@ofx.com`, senha `Mudar@123`) existem **apenas para desenvolvimento**. Troque ou desative antes de publicar em produção.
 
 ## Autor
 
-**Henrique Molinari**
-
-GitHub: [@henrique-molinari](https://github.com/henrique-molinari)
+Feito por [Henrique Molinari](https://github.com/henrique-molinari).

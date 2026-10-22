@@ -7,10 +7,10 @@ export default defineConfig({
   plugins: [react()],
   server: {
     port: 5173,
-    // Tudo que começa com /api o Vite manda para o meu backend em Python.
+    // Tudo que começa com /api o Vite manda para o backend em Node.js.
     // Assim eu não preciso escrever http://localhost:5000 em todo lugar.
     proxy: {
-      "/api": "http://localhost:5000",
+      "/api": "http://localhost:3333",
     },
   },
 });

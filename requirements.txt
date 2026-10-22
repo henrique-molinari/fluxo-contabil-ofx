@@ -1,6 +1,0 @@
-ofxparse
-psycopg2-binary
-python-dotenv
-flask
-flask-cors
-openpyxl

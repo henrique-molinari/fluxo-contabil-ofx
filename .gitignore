@@ -1,5 +1,24 @@
-venv/
-__pycache__/
+# Dependências
+node_modules/
+
+# Build
+dist/
+build/
+
+# Segredos: NUNCA versionar (só o .env.example vai para o Git)
 .env
-frontend/node_modules/
-frontend/dist/
+.env.*
+!.env.example
+env/.env
+env/.env.*
+!env/.env.example
+
+# Logs
+*.log
+npm-debug.log*
+
+# Editor e sistema
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

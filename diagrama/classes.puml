@@ -1,0 +1,83 @@
+@startuml classes
+title API OFX - Papéis e acessos
+
+left to right direction
+skinparam shadowing false
+skinparam nodesep 25
+skinparam ranksep 120
+skinparam classAttributeIconSize 0
+skinparam class {
+  BorderColor #444444
+  BackgroundColor White
+}
+
+' ===== Papéis =====
+abstract class Usuario {
+  nome
+  email
+  perfil
+  --
+  login()
+  trocarSenha()
+  verMinhasTarefas()
+}
+
+class Estagiario #FFF4D6
+class AnalistaFiscal #E5F6EF
+class Gestor #DCE8F5
+
+Usuario <|-- Estagiario
+Usuario <|-- AnalistaFiscal
+Usuario <|-- Gestor
+
+' ===== Módulos da API =====
+class Importacao {
+  importarOFX()
+}
+class Tratamento {
+  listarContas()
+  lancarConta()
+  alterarConta()
+  classificar()
+}
+class Comentarios {
+  ler()
+  escrever()
+}
+class Analise {
+  verGraficos()
+}
+class Exportacao {
+  gerarRelatorio()
+}
+class Tarefas {
+  delegar()
+}
+class UsuariosAdmin {
+  cadastrar()
+  desativar()
+}
+
+' ===== Quem acessa o quê =====
+Estagiario -[#E08A00]-> Importacao
+Estagiario -[#E08A00]-> Tratamento : só lançar e listar
+
+AnalistaFiscal -[#2E7D32]-> Importacao
+AnalistaFiscal -[#2E7D32]-> Tratamento : tudo
+AnalistaFiscal -[#2E7D32]-> Comentarios : escreve
+AnalistaFiscal -[#2E7D32]-> Analise
+AnalistaFiscal -[#2E7D32]-> Exportacao
+
+Gestor -[#1565C0]-> Comentarios : só lê
+Gestor -[#1565C0]-> Analise
+Gestor -[#1565C0]-> Exportacao
+Gestor -[#1565C0]-> Tarefas
+Gestor -[#1565C0]-> UsuariosAdmin
+
+note bottom of Usuario
+  Toda chamada passa por:
+  1) Autenticação - quem é você? (erro 401)
+  2) Autorização - o que seu perfil pode? (erro 403)
+end note
+
+@enduml
