@@ -1,83 +1,97 @@
-// Repositório de movimentações: é a ÚNICA camada que escreve SQL sobre a tabela "movimentacoes".
-// O serviço decide as regras; aqui só falamos com o banco.
-import { consultar } from "../../shared/db.js";
+// Repositório de movimentações: é a ÚNICA camada que fala com o banco sobre as contas,
+// usando o model Movimentacao do Sequelize. O serviço decide as regras; aqui só buscamos e gravamos.
+import { Op, literal } from "sequelize";
+import { sequelize } from "../../shared/db.js";
+import { Movimentacao } from "../../shared/models/index.js";
 
 // Colunas devolvidas ao cliente (sem campos internos de auditoria)
-const COLUNAS = "id, data_movimentacao, valor, descricao, categoria";
+const COLUNAS = ["id", "data_movimentacao", "valor", "descricao", "categoria"];
+
+// Converte uma instância do model em objeto simples, só com as colunas públicas
+const paraObjeto = (instancia) => Object.fromEntries(COLUNAS.map((c) => [c, instancia.get(c)]));
 
 export class MovimentacoesRepositorio {
-  // Lista com filtros opcionais. O padrão ($1 IS NULL OR ...) ignora o filtro quando não foi enviado.
+  // Lista com filtros opcionais: só entram na consulta os filtros que foram enviados
   async listar({ busca, categoria, de, ate }) {
-    const { rows } = await consultar(
-      `SELECT m.id, m.data_movimentacao, m.valor, m.descricao, m.categoria,
-              (SELECT count(*)::int FROM comentarios c WHERE c.movimentacao_id = m.id) AS qtd_comentarios
-         FROM movimentacoes m
-        WHERE ($1::text IS NULL OR m.descricao ILIKE '%' || $1 || '%')
-          AND ($2::text IS NULL OR m.categoria = $2)
-          AND ($3::date IS NULL OR m.data_movimentacao >= $3)
-          AND ($4::date IS NULL OR m.data_movimentacao <= $4)
-        ORDER BY m.data_movimentacao DESC, m.id DESC`,
-      [busca || null, categoria ?? null, de ?? null, ate ?? null]
-    );
-    return rows;
+    const filtros = [];
+    if (busca) filtros.push({ descricao: { [Op.iLike]: `%${busca}%` } });
+    if (categoria) filtros.push({ categoria });
+    if (de) filtros.push({ data_movimentacao: { [Op.gte]: de } });
+    if (ate) filtros.push({ data_movimentacao: { [Op.lte]: ate } });
+
+    return Movimentacao.findAll({
+      // qtd_comentarios: subconsulta que conta os comentários de cada conta
+      attributes: [
+        ...COLUNAS,
+        [literal('(SELECT count(*)::int FROM comentarios c WHERE c.movimentacao_id = "Movimentacao"."id")'), "qtd_comentarios"],
+      ],
+      where: { [Op.and]: filtros },
+      order: [["data_movimentacao", "DESC"], ["id", "DESC"]],
+      raw: true,
+    });
   }
 
   // Insere uma movimentação e devolve a linha criada
-  async criar({ data_movimentacao, valor, descricao, categoria }, usuarioId) {
-    const { rows } = await consultar(
-      `INSERT INTO movimentacoes (data_movimentacao, valor, descricao, categoria, criado_por)
-       VALUES ($1, $2, $3, $4, $5) RETURNING ${COLUNAS}`,
-      [data_movimentacao, valor, descricao, categoria, usuarioId]
-    );
-    return rows[0];
+  async criar(dados, usuarioId) {
+    const criada = await Movimentacao.create({ ...dados, criado_por: usuarioId });
+    return paraObjeto(criada);
   }
 
-  // Atualização parcial: COALESCE mantém o valor atual dos campos que não foram enviados.
-  // Também registra quem alterou e quando (auditoria). Devolve undefined se o id não existe.
+  // Atualização parcial: só muda os campos enviados e registra quem alterou e quando (auditoria).
+  // Devolve undefined se o id não existe.
   async atualizar(id, dados, usuarioId) {
-    const { rows } = await consultar(
-      `UPDATE movimentacoes SET
-          data_movimentacao = COALESCE($2, data_movimentacao),
-          valor             = COALESCE($3, valor),
-          descricao         = COALESCE($4, descricao),
-          categoria         = COALESCE($5, categoria),
-          alterado_por = $6, alterado_em = now()
-        WHERE id = $1 RETURNING ${COLUNAS}`,
-      [id, dados.data_movimentacao ?? null, dados.valor ?? null, dados.descricao ?? null, dados.categoria ?? null, usuarioId]
-    );
-    return rows[0];
+    const conta = await Movimentacao.findByPk(id);
+    if (!conta) return undefined;
+
+    const alteracoes = {};
+    for (const campo of ["data_movimentacao", "valor", "descricao", "categoria"]) {
+      if (dados[campo] !== undefined && dados[campo] !== null) alteracoes[campo] = dados[campo];
+    }
+    await conta.update({ ...alteracoes, alterado_por: usuarioId, alterado_em: new Date() });
+    return paraObjeto(conta);
   }
 
   // Contas que ainda não foram classificadas (candidatas à classificação automática)
   async listarSemCategoria() {
-    const { rows } = await consultar("SELECT id, descricao FROM movimentacoes WHERE categoria = 'Sem categoria'");
-    return rows;
+    return Movimentacao.findAll({
+      attributes: ["id", "descricao"],
+      where: { categoria: "Sem categoria" },
+      raw: true,
+    });
   }
 
-  // Aplica várias categorias de uma vez com um único UPDATE (em vez de um por conta).
-  // "itens" tem o formato [{ id, categoria }]. Devolve quantas linhas foram alteradas.
+  // Aplica várias categorias de uma vez. "itens" tem o formato [{ id, categoria }].
+  // Agrupa as contas por categoria e faz um UPDATE por categoria, tudo numa transação.
+  // Devolve quantas linhas foram alteradas.
   async atualizarCategorias(itens, usuarioId) {
     if (itens.length === 0) return 0;
-    const { rowCount } = await consultar(
-      `UPDATE movimentacoes m
-          SET categoria = v.categoria, alterado_por = $3, alterado_em = now()
-         FROM unnest($1::int[], $2::text[]) AS v(id, categoria)
-        WHERE m.id = v.id`,
-      [itens.map((i) => i.id), itens.map((i) => i.categoria), usuarioId]
-    );
-    return rowCount;
+
+    const idsPorCategoria = new Map();
+    for (const { id, categoria } of itens) {
+      idsPorCategoria.set(categoria, [...(idsPorCategoria.get(categoria) ?? []), id]);
+    }
+
+    return sequelize.transaction(async (transaction) => {
+      let alteradas = 0;
+      for (const [categoria, ids] of idsPorCategoria) {
+        const [quantidade] = await Movimentacao.update(
+          { categoria, alterado_por: usuarioId, alterado_em: new Date() },
+          { where: { id: ids }, transaction }
+        );
+        alteradas += quantidade;
+      }
+      return alteradas;
+    });
   }
 
   // Apaga uma conta; devolve quantas linhas foram removidas (0 = não existia)
   async apagar(id) {
-    const { rowCount } = await consultar("DELETE FROM movimentacoes WHERE id = $1", [id]);
-    return rowCount;
+    return Movimentacao.destroy({ where: { id } });
   }
 
-  // Apaga todas as contas (os comentários vão junto por causa do ON DELETE CASCADE)
+  // Apaga todas as contas (os comentários vão junto por causa do ON DELETE CASCADE do banco)
   async apagarTodas() {
-    const { rowCount } = await consultar("DELETE FROM movimentacoes");
-    return rowCount;
+    return Movimentacao.destroy({ where: {} });
   }
 }
 

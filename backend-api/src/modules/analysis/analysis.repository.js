@@ -1,16 +1,19 @@
-// Repositório da análise: busca as movimentações que alimentam os gráficos.
-import { consultar } from "../../shared/db.js";
+// Repositório da análise: busca as movimentações que alimentam os gráficos (model Movimentacao).
+import { Op } from "sequelize";
+import { Movimentacao } from "../../shared/models/index.js";
 
 export class AnaliseRepositorio {
-  // Movimentações do período (filtros nulos são ignorados)
+  // Movimentações do período (só entram os filtros que foram enviados)
   async listarPeriodo({ de, ate }) {
-    const { rows } = await consultar(
-      `SELECT data_movimentacao, valor, categoria FROM movimentacoes
-        WHERE ($1::date IS NULL OR data_movimentacao >= $1)
-          AND ($2::date IS NULL OR data_movimentacao <= $2)`,
-      [de ?? null, ate ?? null]
-    );
-    return rows;
+    const filtros = [];
+    if (de) filtros.push({ data_movimentacao: { [Op.gte]: de } });
+    if (ate) filtros.push({ data_movimentacao: { [Op.lte]: ate } });
+
+    return Movimentacao.findAll({
+      attributes: ["data_movimentacao", "valor", "categoria"],
+      where: { [Op.and]: filtros },
+      raw: true,
+    });
   }
 }
 
