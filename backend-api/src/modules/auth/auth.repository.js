@@ -1,70 +1,61 @@
-// Repositório da autenticação: SQL das tabelas "usuarios" (login/senha) e "refresh_tokens".
-import { consultar } from "../../shared/db.js";
+// Repositório da autenticação: acesso aos models Usuario (login/senha) e RefreshToken.
+import { col, fn, where as comparar } from "sequelize";
+import { RefreshToken, Usuario } from "../../shared/models/index.js";
 
 export class AuthRepositorio {
   // Busca o usuário pelo e-mail, sem diferenciar maiúsculas de minúsculas
   async buscarUsuarioPorEmail(email) {
-    const { rows } = await consultar("SELECT * FROM usuarios WHERE lower(email) = lower($1)", [email]);
-    return rows[0];
+    return Usuario.findOne({
+      where: comparar(fn("lower", col("email")), email.toLowerCase()),
+      raw: true,
+    });
   }
 
-  // Busca o usuário pelo id
+  // Busca o usuário pelo id (devolve um objeto simples, ou null se não existir)
   async buscarUsuarioPorId(id) {
-    const { rows } = await consultar("SELECT * FROM usuarios WHERE id = $1", [id]);
-    return rows[0];
+    return Usuario.findByPk(id, { raw: true });
   }
 
-  // Busca só os dados que o middleware "autenticar" coloca em req.usuario (sem senha_hash)
+  // Busca só os dados que o middleware "authenticate" coloca em req.usuario (sem senha_hash)
   async buscarUsuarioAutenticado(id) {
-    const { rows } = await consultar("SELECT id, nome, email, perfil, ativo FROM usuarios WHERE id = $1", [id]);
-    return rows[0];
+    return Usuario.findByPk(id, { attributes: ["id", "nome", "email", "perfil", "ativo"], raw: true });
   }
 
   // Guarda o hash de um refresh token novo (nunca o token em si)
   async salvarRefreshToken(usuarioId, tokenHash, expiraEm) {
-    await consultar(
-      "INSERT INTO refresh_tokens (usuario_id, token_hash, expira_em) VALUES ($1, $2, $3)",
-      [usuarioId, tokenHash, expiraEm]
-    );
+    await RefreshToken.create({ usuario_id: usuarioId, token_hash: tokenHash, expira_em: expiraEm });
   }
 
   // Procura um refresh token pelo hash
   async buscarRefreshToken(tokenHash) {
-    const { rows } = await consultar("SELECT * FROM refresh_tokens WHERE token_hash = $1", [tokenHash]);
-    return rows[0];
+    return RefreshToken.findOne({ where: { token_hash: tokenHash }, raw: true });
   }
 
   // Marca um refresh token (pelo id) como usado/revogado
   async revogarRefreshToken(id) {
-    await consultar("UPDATE refresh_tokens SET revogado_em = now() WHERE id = $1", [id]);
+    await RefreshToken.update({ revogado_em: new Date() }, { where: { id } });
   }
 
   // Revoga um refresh token pelo hash, se ainda estiver ativo (usado no logout)
   async revogarPorHash(tokenHash) {
-    await consultar(
-      "UPDATE refresh_tokens SET revogado_em = now() WHERE token_hash = $1 AND revogado_em IS NULL",
-      [tokenHash]
-    );
+    await RefreshToken.update({ revogado_em: new Date() }, { where: { token_hash: tokenHash, revogado_em: null } });
   }
 
   // Revoga todos os refresh tokens ativos de um usuário
   async revogarTodos(usuarioId) {
-    await consultar(
-      "UPDATE refresh_tokens SET revogado_em = now() WHERE usuario_id = $1 AND revogado_em IS NULL",
-      [usuarioId]
-    );
+    await RefreshToken.update({ revogado_em: new Date() }, { where: { usuario_id: usuarioId, revogado_em: null } });
   }
 
   // Devolve o hash da senha atual do usuário
   async buscarSenhaHash(usuarioId) {
-    const { rows } = await consultar("SELECT senha_hash FROM usuarios WHERE id = $1", [usuarioId]);
-    return rows[0]?.senha_hash;
+    const usuario = await Usuario.findByPk(usuarioId, { attributes: ["senha_hash"], raw: true });
+    return usuario?.senha_hash;
   }
 
   // Troca o hash da senha; devolve quantas linhas foram alteradas (0 = usuário não existe)
   async atualizarSenha(usuarioId, senhaHash) {
-    const { rowCount } = await consultar("UPDATE usuarios SET senha_hash = $1 WHERE id = $2", [senhaHash, usuarioId]);
-    return rowCount;
+    const [alteradas] = await Usuario.update({ senha_hash: senhaHash }, { where: { id: usuarioId } });
+    return alteradas;
   }
 }
 
