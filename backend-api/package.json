@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "node --watch src/server.js",
     "start": "node src/server.js",
-    "test": "node --test test/unitarios.test.js",
+    "test": "node --test test/unitarios.test.js test/servicos.test.js",
     "test:integracao": "node --test test/integracao.test.js",
     "db:migrar": "node scripts/migrar.js",
     "db:seed": "node scripts/seed.js"
