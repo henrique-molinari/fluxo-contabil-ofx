@@ -103,8 +103,9 @@ fluxo-contabil/
 │   └── .env.example          #   modelo (o .env de verdade não vai para o Git)
 └── frontend/                 # React 18 + Vite
     └── src/
-        ├── App.jsx           #   menu filtrado pelas permissões do usuário
-        ├── compartilhado/    #   http.js (token), formatos, Carregando
+        ├── App.jsx, Sistema.jsx, MenuLateral.jsx   #   login x sistema, layout e menu filtrado pelas permissões
+        ├── registroModulos.js  #   lista dos módulos (e a permissão de cada um)
+        ├── compartilhado/    #   componentes reutilizáveis (Botao, Campo, Tabela, Painel...), hooks (useRequisicao, useFormulario...) e http.js
         └── modulos/          #   uma pasta por módulo (mesmos nomes do backend)
 ```
 
@@ -172,6 +173,19 @@ Abra `http://localhost:5173`. Usuários criados pelo `db:seed` (senha `Mudar@123
 | Gestor | `gestor@ofx.com` |
 
 > Já usava a versão em Python? As migrações preservam a tabela `movimentacoes` existente, só acrescentam colunas novas.
+
+## Componentes e hooks do frontend
+
+Os componentes usam **PascalCase** (`Botao.jsx`, `TabelaTarefas.jsx`) e os hooks começam com `use` (`useRequisicao.js`). Cada módulo é dividido em componentes pequenos, e o que se repete fica em `frontend/src/compartilhado/`:
+
+| Item | Para que serve |
+| --- | --- |
+| `Alerta`, `Botao`, `Campo`, `Selo` | peças básicas (aviso, botão com spinner, rótulo + campo, etiqueta) |
+| `Painel`, `EstadoVazio`, `Modal` | blocos de layout (cartão com cabeçalho, tela vazia, janela lateral) |
+| `Tabela` | tabela genérica: a tela só descreve as colunas |
+| `useRequisicao` | busca dados na API ao abrir a tela (carregando, erro, recarregar) |
+| `useFormulario` | formulário que abre e fecha, liga os campos e trata o envio |
+| `useMensagem`, `usePreferencia`, `useHashRota` | aviso de sucesso/erro, escolha salva no navegador e navegação pela URL (`#tarefas`) |
 
 ## Autenticação e autorização
 
