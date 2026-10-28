@@ -10,7 +10,7 @@ Scripts SQL do PostgreSQL. Ficam em `migracoes/`, numerados na ordem em que deve
 | `004_tarefas.sql` | `tarefas` |
 | `005_usuarios_teste.sql` | 3 usuários de teste, um por perfil (senha `Mudar@123`) |
 
-Para aplicar (a partir da pasta `backend/`):
+Para aplicar (a partir da pasta `backend-api/`):
 
 ```bash
 npm run db:migrar   # roda só o que ainda não foi aplicado

@@ -10,7 +10,7 @@ api/
 
 ## Testando no Insomnia
 
-1. Suba o banco e a API (`npm run db:migrar`, `npm run db:seed`, `npm run dev` na pasta `backend`).
+1. Suba o banco e a API (`npm run db:migrar`, `npm run db:seed`, `npm run dev` na pasta `backend-api`).
 2. No Insomnia: **Import** → escolha `api/insomnia/ofx-insomnia.json`.
 3. As requisições de upload apontam para os arquivos de `api/exemplos/` pelo **caminho completo desta máquina**. Se o projeto estiver em outra pasta, reabra a requisição, vá em *Body* e escolha o arquivo de novo.
 4. As variáveis (URL, e-mails e senha dos 3 perfis) estão em **Manage Environments**.
@@ -23,7 +23,7 @@ api/
 
 ## Rotas
 
-Legenda: 🔓 pública · 🔑 só precisa estar logado · demais exigem a permissão indicada (veja os perfis em [`permissoes.js`](../backend/src/config/permissoes.js)).
+Legenda: 🔓 pública · 🔑 só precisa estar logado · demais exigem a permissão indicada (veja os perfis em [`permissoes.js`](../backend-api/src/config/permissoes.js)).
 
 ### Auth
 | Método | Rota | Acesso |

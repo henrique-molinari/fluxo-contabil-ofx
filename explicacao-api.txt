@@ -66,7 +66,7 @@ COMO FOI TESTADO
 ORGANIZAÇÃO DO PROJETO
 ----------------------
   bd/        scripts SQL do banco
-  backend/   código da API, uma pasta por módulo
+  backend-api/ código da API, uma pasta por módulo
   api/       documentação das rotas e coleção do Insomnia
   env/       variáveis de ambiente (configurações e segredos)
   frontend/  telas em React que consomem a API

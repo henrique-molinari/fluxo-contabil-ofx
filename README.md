@@ -70,7 +70,7 @@ Cada requisição passa por **autenticar** (quem é você? → 401) e **autoriza
 | Ver / atualizar as próprias tarefas | ✅ | ✅ | ✅ (vê todas) |
 | Gerenciar usuários | ❌ | ❌ | ✅ |
 
-A tabela é definida em um único arquivo: [backend/src/config/permissoes.js](backend/src/config/permissoes.js).
+A tabela é definida em um único arquivo: [backend-api/src/config/permissoes.js](backend-api/src/config/permissoes.js).
 
 ## Estrutura de pastas
 
@@ -78,7 +78,7 @@ A tabela é definida em um único arquivo: [backend/src/config/permissoes.js](ba
 fluxo-contabil/
 ├── bd/                       # Banco de dados
 │   └── migracoes/            #   scripts SQL numerados (001_..., 002_...)
-├── backend/                  # API em Node.js + Express
+├── backend-api/              # API em Node.js + Express
 │   ├── scripts/              #   migrar.js e seed.js
 │   ├── test/                 #   testes automatizados
 │   └── src/
@@ -135,7 +135,7 @@ Edite o `env/.env`: `PGDATABASE=ofx_app`, `PGPASSWORD=<senha do seu postgres>` e
 **3. Subir o backend** (porta 3333)
 
 ```bash
-cd backend
+cd backend-api
 npm install
 npm run db:migrar       # cria as tabelas (bd/migracoes)
 npm run db:seed         # cria os 3 usuários de exemplo
@@ -177,8 +177,8 @@ Abra `http://localhost:5173`. Usuários criados pelo `db:seed` (senha `Mudar@123
 
 São duas etapas separadas, cada uma com seu middleware:
 
-1. **Autenticação (quem é você?)** — [`autenticar.js`](backend/src/compartilhado/middlewares/autenticar.js). Valida o JWT do cabeçalho `Authorization: Bearer ...` e carrega o usuário. Falhou = **401**.
-2. **Autorização (o que você pode fazer?)** — [`autorizar.js`](backend/src/compartilhado/middlewares/autorizar.js). Confere se o perfil tem a permissão que a rota exige, por exemplo `autorizar("analise:ler")`. Falhou = **403**.
+1. **Autenticação (quem é você?)** — [`autenticar.js`](backend-api/src/compartilhado/middlewares/autenticar.js). Valida o JWT do cabeçalho `Authorization: Bearer ...` e carrega o usuário. Falhou = **401**.
+2. **Autorização (o que você pode fazer?)** — [`autorizar.js`](backend-api/src/compartilhado/middlewares/autorizar.js). Confere se o perfil tem a permissão que a rota exige, por exemplo `autorizar("analise:ler")`. Falhou = **403**.
 
 Detalhes do login:
 
@@ -189,15 +189,23 @@ Detalhes do login:
 
 ## Módulos do backend
 
-Cada pasta em `backend/src/modulos/` segue o mesmo padrão: `<modulo>.rotas.js` (e, quando precisa, `<modulo>.servico.js` com a regra de negócio). Para criar um módulo novo: crie a pasta, exporte um `Router` e registre-o em [app.js](backend/src/app.js).
+Cada pasta em `backend-api/src/modulos/` segue o mesmo padrão em três camadas, cada uma com uma responsabilidade:
+
+| Arquivo | Camada | Responsabilidade |
+| --- | --- | --- |
+| `<modulo>.rotas.js` | HTTP | valida a entrada (zod), confere a permissão e devolve a resposta; não tem regra de negócio nem SQL |
+| `<modulo>.servico.js` | Regras de negócio | classe que decide o que pode ou não acontecer (ex.: só o dono da tarefa a atualiza); não conhece Express nem SQL |
+| `<modulo>.repositorio.js` | Dados | classe que escreve todo o SQL do módulo |
+
+Os serviços recebem o repositório pelo construtor (injeção de dependência), por isso os testes conseguem trocá-lo por um falso. Para criar um módulo novo: crie a pasta com essas três camadas, exporte um `Router` e registre-o em [app.js](backend-api/src/app.js).
 
 A lista completa de rotas e permissões está em [api/README.md](api/README.md).
 
 ## Testes
 
 ```bash
-cd backend
-npm test                # unitários (sem banco): leitor de OFX, classificador, permissões, resumo
+cd backend-api
+npm test                # unitários (sem banco): leitor de OFX, classificador, permissões, resumo e serviços
 npm run test:integracao # API ponta a ponta no PostgreSQL (veja a trava de segurança abaixo)
 ```
 
@@ -225,7 +233,7 @@ Se a descrição da conta (sem acento e em maiúsculas) contiver uma das palavra
 | Veículo | VEICULO, ESTACIONAMENTO |
 | Assinaturas | ASSINATURA |
 
-As regras ficam em [classificador.js](backend/src/modulos/tratamento/classificador.js). Outras categorias disponíveis para escolha manual: *Outros* e *Sem categoria*.
+As regras ficam em [classificador.js](backend-api/src/modulos/tratamento/classificador.js). Outras categorias disponíveis para escolha manual: *Outros* e *Sem categoria*.
 
 ## Diagramas
 
