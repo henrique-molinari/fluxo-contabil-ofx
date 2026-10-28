@@ -1,0 +1,52 @@
+@startuml camadas
+title API OFX - Camadas de cada módulo
+
+left to right direction
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam class {
+  BorderColor #444444
+  BackgroundColor White
+}
+
+' Camada HTTP: valida, confere permissão e responde (sem regra de negócio nem SQL)
+class "Rotas (Router)" as Rotas #DCE8F5 {
+  validar()
+  autenticar()
+  autorizar()
+}
+
+' Camada de regras: decide o que pode acontecer (sem Express e sem SQL)
+class "Serviço" as Servico #E5F6EF {
+  listar()
+  criar()
+  atualizar()
+  apagar()
+}
+
+' Camada de dados: todo o SQL do módulo
+class "Repositório" as Repositorio #FFF4D6 {
+  consultar()
+  inserir()
+  atualizar()
+  apagar()
+}
+
+database "PostgreSQL" as Banco
+
+Rotas --> Servico : chama
+Servico --> Repositorio : recebe pelo construtor\n(injeção de dependência)
+Repositorio --> Banco : SQL parametrizado
+
+note bottom of Servico
+  Módulos: tratamento, importacao, comentarios,
+  tarefas, usuarios, analise, exportacao e auth.
+  Nos testes o repositório é trocado por um falso.
+end note
+
+class ErroHttp {
+  status
+  mensagem
+}
+Servico ..> ErroHttp : lança
+@enduml

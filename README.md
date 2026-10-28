@@ -138,7 +138,7 @@ Edite o `env/.env`: `PGDATABASE=ofx_app`, `PGPASSWORD=<senha do seu postgres>` e
 cd backend-api
 npm install
 npm run db:migrar       # cria as tabelas (bd/migracoes)
-npm run db:seed         # cria os 3 usuários de exemplo
+npm run db:seed         # cria os 3 usuários e dados de exemplo (contas, comentários, tarefas)
 npm run dev
 ```
 
@@ -237,7 +237,7 @@ As regras ficam em [classificador.js](backend-api/src/modulos/tratamento/classif
 
 ## Diagramas
 
-Em [diagrama/](diagrama/) estão o **diagrama de classes** ([classes.puml](diagrama/classes.puml)) e o **DER** do banco ([der.puml](diagrama/der.puml)). Abra no VS Code com a extensão *PlantUML* ou cole o conteúdo em [plantuml.com](https://www.plantuml.com/plantuml).
+Em [diagrama/](diagrama/) estão o **diagrama de classes** ([classes.puml](diagrama/classes.puml)), o das **camadas** da API ([camadas.puml](diagrama/camadas.puml)) e o **DER** do banco ([der.puml](diagrama/der.puml)). Abra no VS Code com a extensão *PlantUML* ou cole o conteúdo em [plantuml.com](https://www.plantuml.com/plantuml).
 
 ## Segurança do repositório
 
