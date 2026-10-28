@@ -8,5 +8,8 @@ export class ErroHttp extends Error {
   }
 }
 
-// Atalho para o 404 mais comum: naoEncontrado('Tarefa') -> "Tarefa não encontrado."
-export const naoEncontrado = (o = "Registro") => new ErroHttp(404, `${o} não encontrado.`);
+// Atalho para o 404 mais comum, já com a concordância certa:
+//   naoEncontrado("Usuário")          -> "Usuário não encontrado."
+//   naoEncontrado("Tarefa", true)     -> "Tarefa não encontrada."
+export const naoEncontrado = (o = "Registro", feminino = false) =>
+  new ErroHttp(404, `${o} não encontrad${feminino ? "a" : "o"}.`);
