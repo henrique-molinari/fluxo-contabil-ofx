@@ -1,6 +1,6 @@
 // Popula o banco com dados de exemplo para desenvolvimento:
 //   - os 3 usuários (um de cada perfil);
-//   - as movimentações do extrato api/exemplos/extrato_completo.ofx (já classificadas);
+//   - as movimentações do extrato api/examples/statement_complete.ofx (já classificadas);
 //   - alguns comentários do analista e tarefas delegadas pelo gestor.
 //   npm run db:seed        (senha vem de SEED_SENHA em env/.env)
 // É seguro rodar várias vezes: nada é duplicado.
@@ -19,7 +19,7 @@ if (env.producao) {
 }
 
 // Extrato de exemplo que acompanha o projeto
-const extrato = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../api/exemplos/extrato_completo.ofx");
+const extrato = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../api/examples/statement_complete.ofx");
 
 // ON CONFLICT DO NOTHING (abaixo) faz o seed ser seguro de rodar várias vezes
 const USUARIOS = [

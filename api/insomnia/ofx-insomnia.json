@@ -468,7 +468,7 @@
           {
             "name": "arquivo",
             "type": "file",
-            "fileName": "C:\\Users\\henri\\OneDrive\\Desktop\\PROJETO OFX\\ProjetoOFX\\api\\exemplos\\extrato_completo.ofx"
+            "fileName": "C:\\Users\\henri\\OneDrive\\Desktop\\PROJETO OFX\\ProjetoOFX\\api\\examples\\statement_complete.ofx"
           }
         ]
       },
@@ -504,7 +504,7 @@
           {
             "name": "arquivo",
             "type": "file",
-            "fileName": "C:\\Users\\henri\\OneDrive\\Desktop\\PROJETO OFX\\ProjetoOFX\\api\\exemplos\\extrato_completo.ofx"
+            "fileName": "C:\\Users\\henri\\OneDrive\\Desktop\\PROJETO OFX\\ProjetoOFX\\api\\examples\\statement_complete.ofx"
           }
         ]
       },
@@ -540,7 +540,7 @@
           {
             "name": "arquivo",
             "type": "file",
-            "fileName": "C:\\Users\\henri\\OneDrive\\Desktop\\PROJETO OFX\\ProjetoOFX\\api\\exemplos\\extrato_completo.ofx"
+            "fileName": "C:\\Users\\henri\\OneDrive\\Desktop\\PROJETO OFX\\ProjetoOFX\\api\\examples\\statement_complete.ofx"
           }
         ]
       },
@@ -1148,7 +1148,7 @@
           {
             "name": "arquivo",
             "type": "file",
-            "fileName": "C:\\Users\\henri\\OneDrive\\Desktop\\PROJETO OFX\\ProjetoOFX\\api\\exemplos\\extrato_simples.ofx"
+            "fileName": "C:\\Users\\henri\\OneDrive\\Desktop\\PROJETO OFX\\ProjetoOFX\\api\\examples\\statement_simple.ofx"
           }
         ]
       },
@@ -2101,7 +2101,7 @@
           {
             "name": "arquivo",
             "type": "file",
-            "fileName": "C:\\Users\\henri\\OneDrive\\Desktop\\PROJETO OFX\\ProjetoOFX\\api\\exemplos\\extrato_simples.ofx"
+            "fileName": "C:\\Users\\henri\\OneDrive\\Desktop\\PROJETO OFX\\ProjetoOFX\\api\\examples\\statement_simple.ofx"
           }
         ]
       },
@@ -2280,7 +2280,7 @@
           {
             "name": "arquivo",
             "type": "file",
-            "fileName": "C:\\Users\\henri\\OneDrive\\Desktop\\PROJETO OFX\\ProjetoOFX\\api\\exemplos\\arquivo_invalido.txt"
+            "fileName": "C:\\Users\\henri\\OneDrive\\Desktop\\PROJETO OFX\\ProjetoOFX\\api\\examples\\invalid_file.txt"
           }
         ]
       },

@@ -16,7 +16,7 @@ const { criarApp } = await import("../src/app.js");
 const { pool } = await import("../src/compartilhado/db.js");
 const bcrypt = (await import("bcryptjs")).default;
 
-const exemplos = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../api/exemplos");
+const exemplos = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../api/examples");
 const SENHA = "Teste@12345";
 const contas = {
   analista: { email: "t.analista@teste.com", perfil: "ANALISTA" },
@@ -40,7 +40,7 @@ const chamar = async (quem, metodo, url, corpo, extra = {}) => {
   return { status: r.status, dados, headers: r.headers };
 };
 
-const formOfx = (arquivo = "extrato.ofx") => {
+const formOfx = (arquivo = "statement.ofx") => {
   const f = new FormData();
   f.append("arquivo", new Blob([fs.readFileSync(path.join(exemplos, arquivo))]), arquivo);
   return f;

@@ -12,7 +12,7 @@ const { classificar } = await import("../src/modulos/tratamento/classificador.js
 const { calcularResumo } = await import("../src/modulos/analise/analise.servico.js");
 const { temPermissao, PERMISSOES, PERFIS } = await import("../src/config/permissoes.js");
 
-const exemplos = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../api/exemplos");
+const exemplos = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../api/examples");
 
 test("classificador: ignora acento e maiúsculas", () => {
   assert.equal(classificar("Pagamento ALUGUEL sala"), "Aluguel");
@@ -22,7 +22,7 @@ test("classificador: ignora acento e maiúsculas", () => {
 });
 
 test("parser OFX: lê o extrato de exemplo", () => {
-  const movs = lerOfx(fs.readFileSync(path.join(exemplos, "extrato.ofx")));
+  const movs = lerOfx(fs.readFileSync(path.join(exemplos, "statement.ofx")));
   assert.ok(movs.length > 0);
   for (const m of movs) {
     assert.match(m.data, /^\d{4}-\d{2}-\d{2}$/);

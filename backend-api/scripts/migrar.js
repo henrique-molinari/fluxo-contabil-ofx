@@ -1,11 +1,21 @@
-// Aplica os arquivos de bd/migracoes/*.sql que ainda não rodaram, em ordem.
+// Aplica os arquivos de database/migrations/*.sql que ainda não rodaram, em ordem.
 //   npm run db:migrar
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { pool } from "../src/compartilhado/db.js";
 
-const pasta = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../bd/migracoes");
+const pasta = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../database/migrations");
+
+// Nomes antigos (em português) dos arquivos de migração. Bancos que já aplicaram o nome antigo
+// não rodam a migração de novo depois que o arquivo foi renomeado.
+const NOMES_ANTIGOS = {
+  "001_users.sql": "001_usuarios.sql",
+  "002_transactions.sql": "002_movimentacoes.sql",
+  "003_comments.sql": "003_comentarios.sql",
+  "004_tasks.sql": "004_tarefas.sql",
+  "005_test_users.sql": "005_usuarios_teste.sql",
+};
 
 try {
   await pool.query(`CREATE TABLE IF NOT EXISTS migracoes_aplicadas (
@@ -16,7 +26,7 @@ try {
 
   const arquivos = fs.readdirSync(pasta).filter((f) => f.endsWith(".sql")).sort();
   for (const arquivo of arquivos) {
-    if (feitas.has(arquivo)) continue;
+    if (feitas.has(arquivo) || feitas.has(NOMES_ANTIGOS[arquivo])) continue;
     // Cada migração roda numa transação: se der erro, volta tudo atrás
     const cliente = await pool.connect();
     try {

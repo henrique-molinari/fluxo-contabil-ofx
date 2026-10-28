@@ -5,14 +5,14 @@ Documentação e testes da API. Base: `http://localhost:3333/api`.
 ```
 api/
 ├── insomnia/ofx-insomnia.json   # coleção do Insomnia
-└── exemplos/                    # .ofx para testar a importação
+└── examples/                    # .ofx para testar a importação
 ```
 
 ## Testando no Insomnia
 
 1. Suba o banco e a API (`npm run db:migrar`, `npm run db:seed`, `npm run dev` na pasta `backend-api`).
 2. No Insomnia: **Import** → escolha `api/insomnia/ofx-insomnia.json`.
-3. As requisições de upload apontam para os arquivos de `api/exemplos/` pelo **caminho completo desta máquina**. Se o projeto estiver em outra pasta, reabra a requisição, vá em *Body* e escolha o arquivo de novo.
+3. As requisições de upload apontam para os arquivos de `api/examples/` pelo **caminho completo desta máquina**. Se o projeto estiver em outra pasta, reabra a requisição, vá em *Body* e escolha o arquivo de novo.
 4. As variáveis (URL, e-mails e senha dos 3 perfis) estão em **Manage Environments**.
 
 **Como o token funciona:** cada requisição já usa o login do perfil dela (`Login analista`, `Login estagiario`, `Login gestor`), encadeado pelo Insomnia. O login é refeito sozinho quando o token tem mais de 10 minutos. Você não copia token nenhum.

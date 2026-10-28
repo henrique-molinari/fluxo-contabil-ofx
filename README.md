@@ -76,8 +76,8 @@ A tabela é definida em um único arquivo: [backend-api/src/config/permissoes.js
 
 ```
 fluxo-contabil/
-├── bd/                       # Banco de dados
-│   └── migracoes/            #   scripts SQL numerados (001_..., 002_...)
+├── database/                 # Banco de dados
+│   └── migrations/           #   scripts SQL numerados (001_..., 002_...)
 ├── backend-api/              # API em Node.js + Express
 │   ├── scripts/              #   migrar.js e seed.js
 │   ├── test/                 #   testes automatizados
@@ -96,9 +96,9 @@ fluxo-contabil/
 │           └── tarefas/      #     tarefas delegadas pelo gestor
 ├── api/                      # Documentação e testes da API
 │   ├── insomnia/             #   coleção do Insomnia (78 requisições + testes)
-│   ├── exemplos/             #   extratos .ofx para testar a importação
+│   ├── examples/             #   extratos .ofx para testar a importação
 │   └── README.md             #   lista de rotas
-├── diagrama/                 # Diagramas PlantUML (classes.puml e der.puml)
+├── diagrams/                 # Diagramas PlantUML (classes.puml, layers.puml e erd.puml)
 ├── env/                      # Variáveis de ambiente
 │   └── .env.example          #   modelo (o .env de verdade não vai para o Git)
 └── frontend/                 # React 18 + Vite
@@ -138,7 +138,7 @@ Edite o `env/.env`: `PGDATABASE=ofx_app`, `PGPASSWORD=<senha do seu postgres>` e
 ```bash
 cd backend-api
 npm install
-npm run db:migrar       # cria as tabelas (bd/migracoes)
+npm run db:migrar       # cria as tabelas (database/migrations)
 npm run db:seed         # cria os 3 usuários e dados de exemplo (contas, comentários, tarefas)
 npm run dev
 ```
@@ -156,11 +156,11 @@ npm run dev
 **5. Testar no navegador**
 
 1. Abra `http://localhost:5173` e entre como **analista** (`analista@ofx.com`).
-2. Vá em *Importação* e envie [api/exemplos/extrato_completo.ofx](api/exemplos/extrato_completo.ofx). Confirme a importação.
+2. Vá em *Importação* e envie [api/examples/statement_complete.ofx](api/examples/statement_complete.ofx). Confirme a importação.
 3. Em *Tratamento*, veja as contas e altere uma categoria.
 4. Em *Análise* e *Exportação*, veja os gráficos e baixe um CSV/Excel.
 5. Saia e entre como **estagiário** (só importa e vê a lista) e como **gestor** (vê análise, exporta, delega tarefas e gerencia usuários). Cada menu aparece conforme as permissões do perfil.
-6. Teste também o arquivo inválido [api/exemplos/arquivo_invalido.txt](api/exemplos/arquivo_invalido.txt): deve ser recusado com mensagem de erro.
+6. Teste também o arquivo inválido [api/examples/invalid_file.txt](api/examples/invalid_file.txt): deve ser recusado com mensagem de erro.
 
 Para testar a API sem o frontend, importe a coleção [api/insomnia/ofx-insomnia.json](api/insomnia/ofx-insomnia.json) no Insomnia. Os testes automatizados estão na seção [Testes](#testes).
 
@@ -251,7 +251,7 @@ As regras ficam em [classificador.js](backend-api/src/modulos/tratamento/classif
 
 ## Diagramas
 
-Em [diagrama/](diagrama/) estão o **diagrama de classes** ([classes.puml](diagrama/classes.puml)), o das **camadas** da API ([camadas.puml](diagrama/camadas.puml)) e o **DER** do banco ([der.puml](diagrama/der.puml)). Abra no VS Code com a extensão *PlantUML* ou cole o conteúdo em [plantuml.com](https://www.plantuml.com/plantuml).
+Em [diagrams/](diagrams/) estão o **diagrama de classes** ([classes.puml](diagrams/classes.puml)), o das **camadas** da API ([layers.puml](diagrams/layers.puml)) e o **DER** do banco ([erd.puml](diagrams/erd.puml)). Abra no VS Code com a extensão *PlantUML* ou cole o conteúdo em [plantuml.com](https://www.plantuml.com/plantuml).
 
 ## Segurança do repositório
 
