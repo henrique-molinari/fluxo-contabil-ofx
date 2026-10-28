@@ -3,7 +3,7 @@
 // Falhou aqui = 401 (não identificado). Quem decide se pode ou não é o autorizar.js (403).
 import jwt from "jsonwebtoken";
 import { env } from "../../config/env.js";
-import { consultar } from "../db.js";
+import { authRepositorio } from "../../modulos/auth/auth.repositorio.js";
 import { ErroHttp } from "../erros.js";
 import { assincrono } from "../asyncHandler.js";
 
@@ -22,11 +22,7 @@ export const autenticar = assincrono(async (req, res, next) => {
 
   // Busca no banco a cada chamada: se o usuário foi desativado ou mudou de perfil,
   // vale na hora (sem esperar o token expirar).
-  const { rows } = await consultar(
-    "SELECT id, nome, email, perfil, ativo FROM usuarios WHERE id = $1",
-    [payload.sub]
-  );
-  const usuario = rows[0];
+  const usuario = await authRepositorio.buscarUsuarioAutenticado(payload.sub);
   if (!usuario || !usuario.ativo) throw new ErroHttp(401, "Usuário inativo ou inexistente.");
 
   req.usuario = usuario;

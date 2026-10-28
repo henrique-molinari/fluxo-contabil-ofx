@@ -7,7 +7,7 @@ import { assincrono } from "../../compartilhado/asyncHandler.js";
 import { autenticar } from "../../compartilhado/middlewares/autenticar.js";
 import { senhaForte } from "../../compartilhado/schemas.js";
 import { validar } from "../../compartilhado/middlewares/validar.js";
-import * as servico from "./auth.servico.js";
+import { authServico as servico } from "./auth.servico.js";
 
 // Formato esperado do corpo de cada requisição
 const schemas = {
