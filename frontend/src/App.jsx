@@ -1,9 +1,9 @@
 // App.jsx
 // Componente principal. Sem login mostra a tela de entrada; logado, mostra o sistema.
-import { Carregando } from "./compartilhado/Carregando.jsx";
-import { AuthProvider, useAuth } from "./modulos/auth/AuthContext.jsx";
-import Login from "./modulos/auth/Login.jsx";
-import Sistema from "./Sistema.jsx";
+import { Carregando } from "./shared/Loading.jsx";
+import { AuthProvider, useAuth } from "./modules/auth/AuthContext.jsx";
+import Login from "./modules/auth/Login.jsx";
+import Sistema from "./System.jsx";
 
 // Decide o que mostrar: spinner (checando sessão), login ou o sistema
 function Porteiro() {
