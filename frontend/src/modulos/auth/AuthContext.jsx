@@ -31,28 +31,30 @@ export function AuthProvider({ children }) {
       .finally(() => setVerificando(false));
   }, [limpar]);
 
-  async function entrar(email, senha) {
+  // Faz o login e guarda a sessão (tokens + dados do usuário)
+  const entrar = useCallback(async (email, senha) => {
     const dados = await authApi.login(email, senha);
     sessao.salvar(dados);
     setUsuario(dados.usuario);
-  }
+  }, []);
 
-  async function sair() {
+  // Avisa a API para invalidar o refresh token e esquece a sessão
+  const sair = useCallback(async () => {
     const refreshToken = sessao.ler()?.refreshToken;
     if (refreshToken) await authApi.logout(refreshToken).catch(() => {});
     limpar();
-  }
+  }, [limpar]);
 
-  // useMemo evita recriar o objeto a cada renderização
+  // Diz se o usuário logado tem uma permissão (ex.: pode("analise:ler"))
+  const pode = useCallback(
+    (permissao) => Boolean(usuario?.permissoes?.includes(permissao)),
+    [usuario]
+  );
+
+  // useMemo evita recriar o objeto a cada renderização; todas as dependências estão listadas
   const valor = useMemo(
-    () => ({
-      usuario,
-      verificando,
-      entrar,
-      sair,
-      pode: (permissao) => Boolean(usuario?.permissoes?.includes(permissao)),
-    }),
-    [usuario, verificando]
+    () => ({ usuario, verificando, entrar, sair, pode }),
+    [usuario, verificando, entrar, sair, pode]
   );
 
   return <Contexto.Provider value={valor}>{children}</Contexto.Provider>;

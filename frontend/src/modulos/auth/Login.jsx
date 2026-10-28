@@ -2,7 +2,9 @@
 // Tela de entrada. Depois de logar, o App mostra só os módulos que o perfil pode usar.
 import { useState } from "react";
 import { Landmark, LogIn } from "lucide-react";
-import { MiniSpinner } from "../../compartilhado/Carregando.jsx";
+import Alerta from "../../compartilhado/Alerta.jsx";
+import Botao from "../../compartilhado/Botao.jsx";
+import Campo from "../../compartilhado/Campo.jsx";
 import { useAuth } from "./AuthContext.jsx";
 
 export default function Login() {
@@ -32,20 +34,16 @@ export default function Login() {
         <h1>Fluxo Contábil</h1>
         <p>Entre com seu e-mail e senha</p>
 
-        {erro && <div className="alerta erro">{erro}</div>}
+        <Alerta tipo="erro">{erro}</Alerta>
 
-        <label>
-          E-mail
+        <Campo rotulo="E-mail">
           <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} autoComplete="username" required autoFocus />
-        </label>
-        <label>
-          Senha
+        </Campo>
+        <Campo rotulo="Senha">
           <input type="password" value={senha} onChange={(e) => setSenha(e.target.value)} autoComplete="current-password" required />
-        </label>
+        </Campo>
 
-        <button className="botao" disabled={enviando}>
-          {enviando ? <MiniSpinner /> : <LogIn size={16} />} Entrar
-        </button>
+        <Botao carregando={enviando} icone={LogIn}>Entrar</Botao>
       </form>
     </div>
   );
