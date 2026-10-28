@@ -13,3 +13,9 @@ export class ErroHttp extends Error {
 //   naoEncontrado("Tarefa", true)     -> "Tarefa não encontrada."
 export const naoEncontrado = (o = "Registro", feminino = false) =>
   new ErroHttp(404, `${o} não encontrad${feminino ? "a" : "o"}.`);
+
+// Erro de "valor único repetido": o Sequelize lança UniqueConstraintError e o PostgreSQL usa o código 23505
+export const violacaoUnica = (e) => e.name === "SequelizeUniqueConstraintError" || e.code === "23505";
+
+// Erro de chave estrangeira inválida: ForeignKeyConstraintError no Sequelize, código 23503 no PostgreSQL
+export const violacaoReferencia = (e) => e.name === "SequelizeForeignKeyConstraintError" || e.code === "23503";

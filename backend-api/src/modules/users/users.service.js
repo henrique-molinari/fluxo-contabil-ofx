@@ -1,6 +1,6 @@
 // Regras da gestão de usuários (só o gestor usa).
 import bcrypt from "bcryptjs";
-import { ErroHttp, naoEncontrado } from "../../shared/errors.js";
+import { ErroHttp, naoEncontrado, violacaoUnica } from "../../shared/errors.js";
 import { authServico } from "../auth/auth.service.js";
 import { usuariosRepositorio } from "./users.repository.js";
 
@@ -20,7 +20,7 @@ export class UsuariosServico {
   async criar({ nome, email, senha, perfil }) {
     const senhaHash = await bcrypt.hash(senha, 10);
     return this.repositorio.criar({ nome, email, senhaHash, perfil }).catch((e) => {
-      if (e.code === "23505") throw new ErroHttp(409, "Já existe um usuário com este e-mail.");
+      if (violacaoUnica(e)) throw new ErroHttp(409, "Já existe um usuário com este e-mail.");
       throw e;
     });
   }

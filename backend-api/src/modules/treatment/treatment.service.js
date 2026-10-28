@@ -1,12 +1,12 @@
 // Regras de negócio do tratamento das contas (movimentações).
 // Não conhece Express nem escreve SQL: recebe dados prontos e usa o repositório.
-import { ErroHttp, naoEncontrado } from "../../shared/errors.js";
+import { ErroHttp, naoEncontrado, violacaoUnica } from "../../shared/errors.js";
 import { CATEGORIAS, classificar } from "./classifier.js";
 import { movimentacoesRepositorio } from "./treatment.repository.js";
 
-// Converte o erro de "valor único repetido" do PostgreSQL (23505) em um 409 amigável
+// Converte o erro de "valor único repetido" (índice único do banco) em um 409 amigável
 function traduzirDuplicada(e) {
-  if (e.code === "23505") {
+  if (violacaoUnica(e)) {
     throw new ErroHttp(409, "Já existe uma movimentação igual (data, valor e descrição).");
   }
   throw e;

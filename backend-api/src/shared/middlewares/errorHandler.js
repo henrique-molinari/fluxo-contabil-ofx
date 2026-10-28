@@ -1,5 +1,5 @@
 // Último middleware: transforma qualquer erro em JSON { erro, detalhes? }.
-import { ErroHttp } from "../errors.js";
+import { ErroHttp, violacaoReferencia, violacaoUnica } from "../errors.js";
 
 // Chamado quando nenhuma rota respondeu: gera o 404
 export function rotaNaoEncontrada(req, res, next) {
@@ -23,9 +23,9 @@ export function tratarErros(err, req, res, next) {
       .status(grande ? 413 : 400)
       .json({ erro: grande ? "Arquivo maior que o limite de 5 MB." : "Erro no envio do arquivo." });
   }
-  // Códigos do PostgreSQL: 23505 = valor único repetido, 23503 = chave estrangeira inválida
-  if (err.code === "23505") return res.status(409).json({ erro: "Registro duplicado." });
-  if (err.code === "23503") return res.status(409).json({ erro: "Referência inválida." });
+  // Erros do banco (Sequelize ou PostgreSQL): valor único repetido e chave estrangeira inválida
+  if (violacaoUnica(err)) return res.status(409).json({ erro: "Registro duplicado." });
+  if (violacaoReferencia(err)) return res.status(409).json({ erro: "Referência inválida." });
 
   // Qualquer outro erro é bug nosso: loga no servidor, mas não vaza detalhes para o cliente
   console.error(err);
