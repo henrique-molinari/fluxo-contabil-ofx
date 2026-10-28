@@ -1,5 +1,5 @@
 -- Usuários do sistema e tokens de renovação (autenticação).
--- O perfil define o que cada pessoa pode fazer (autorização), veja backend/src/config/permissoes.js.
+-- O perfil define o que cada pessoa pode fazer (autorização), veja backend-api/src/config/permissions.js.
 
 CREATE TABLE IF NOT EXISTS usuarios (
     id          SERIAL PRIMARY KEY,

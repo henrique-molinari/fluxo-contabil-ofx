@@ -7,9 +7,9 @@
   "scripts": {
     "dev": "node --watch src/server.js",
     "start": "node src/server.js",
-    "test": "node --test test/unitarios.test.js test/servicos.test.js",
-    "test:integracao": "node --test test/integracao.test.js",
-    "db:migrar": "node scripts/migrar.js",
+    "test": "node --test test/unit.test.js test/services.test.js",
+    "test:integracao": "node --test test/integration.test.js",
+    "db:migrar": "node scripts/migrate.js",
     "db:seed": "node scripts/seed.js"
   },
   "dependencies": {

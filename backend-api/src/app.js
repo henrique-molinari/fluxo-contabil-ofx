@@ -4,16 +4,16 @@ import express from "express";
 import cors from "cors";
 import helmet from "helmet";
 import { env } from "./config/env.js";
-import { rotaNaoEncontrada, tratarErros } from "./compartilhado/middlewares/tratarErros.js";
+import { rotaNaoEncontrada, tratarErros } from "./shared/middlewares/errorHandler.js";
 
-import authRotas from "./modulos/auth/auth.rotas.js";
-import usuariosRotas from "./modulos/usuarios/usuarios.rotas.js";
-import tratamentoRotas from "./modulos/tratamento/tratamento.rotas.js";
-import comentariosRotas from "./modulos/comentarios/comentarios.rotas.js";
-import importacaoRotas from "./modulos/importacao/importacao.rotas.js";
-import analiseRotas from "./modulos/analise/analise.rotas.js";
-import exportacaoRotas from "./modulos/exportacao/exportacao.rotas.js";
-import tarefasRotas from "./modulos/tarefas/tarefas.rotas.js";
+import authRotas from "./modules/auth/auth.routes.js";
+import usuariosRotas from "./modules/users/users.routes.js";
+import tratamentoRotas from "./modules/treatment/treatment.routes.js";
+import comentariosRotas from "./modules/comments/comments.routes.js";
+import importacaoRotas from "./modules/import/import.routes.js";
+import analiseRotas from "./modules/analysis/analysis.routes.js";
+import exportacaoRotas from "./modules/export/export.routes.js";
+import tarefasRotas from "./modules/tasks/tasks.routes.js";
 
 export function criarApp() {
   const app = express();

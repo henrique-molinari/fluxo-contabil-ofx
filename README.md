@@ -70,7 +70,7 @@ Cada requisição passa por **autenticar** (quem é você? → 401) e **autoriza
 | Ver / atualizar as próprias tarefas | ✅ | ✅ | ✅ (vê todas) |
 | Gerenciar usuários | ❌ | ❌ | ✅ |
 
-A tabela é definida em um único arquivo: [backend-api/src/config/permissoes.js](backend-api/src/config/permissoes.js).
+A tabela é definida em um único arquivo: [backend-api/src/config/permissions.js](backend-api/src/config/permissions.js).
 
 ## Estrutura de pastas
 
@@ -79,13 +79,13 @@ fluxo-contabil/
 ├── database/                 # Banco de dados
 │   └── migrations/           #   scripts SQL numerados (001_..., 002_...)
 ├── backend-api/              # API em Node.js + Express
-│   ├── scripts/              #   migrar.js e seed.js
+│   ├── scripts/              #   migrate.js e seed.js
 │   ├── test/                 #   testes automatizados
 │   └── src/
 │       ├── app.js, server.js
-│       ├── config/           #   env.js e permissoes.js
-│       ├── compartilhado/    #   db, erros e middlewares (autenticar, autorizar, validar)
-│       └── modulos/          #   uma pasta por módulo
+│       ├── config/           #   env.js e permissions.js
+│       ├── shared/    #   db, erros e middlewares (autenticar, autorizar, validar)
+│       └── modules/          #   uma pasta por módulo
 │           ├── auth/         #     login, refresh, logout, trocar senha
 │           ├── usuarios/     #     cadastro da equipe (gestor)
 │           ├── importacao/   #     leitor de OFX + prévia + importação
@@ -105,8 +105,8 @@ fluxo-contabil/
     └── src/
         ├── App.jsx, Sistema.jsx, MenuLateral.jsx   #   login x sistema, layout e menu filtrado pelas permissões
         ├── registroModulos.js  #   lista dos módulos (e a permissão de cada um)
-        ├── compartilhado/    #   componentes reutilizáveis (Botao, Campo, Tabela, Painel...), hooks (useRequisicao, useFormulario...) e http.js
-        └── modulos/          #   uma pasta por módulo (mesmos nomes do backend)
+        ├── shared/    #   componentes reutilizáveis (Botao, Campo, Tabela, Painel...), hooks (useRequisicao, useFormulario...) e http.js
+        └── modules/          #   uma pasta por módulo (mesmos nomes do backend)
 ```
 
 ## Como rodar
@@ -176,7 +176,7 @@ Abra `http://localhost:5173`. Usuários criados pelo `db:seed` (senha `Mudar@123
 
 ## Componentes e hooks do frontend
 
-Os componentes usam **PascalCase** (`Botao.jsx`, `TabelaTarefas.jsx`) e os hooks começam com `use` (`useRequisicao.js`). Cada módulo é dividido em componentes pequenos, e o que se repete fica em `frontend/src/compartilhado/`:
+Os componentes usam **PascalCase** (`Botao.jsx`, `TabelaTarefas.jsx`) e os hooks começam com `use` (`useRequisicao.js`). Cada módulo é dividido em componentes pequenos, e o que se repete fica em `frontend/src/shared/`:
 
 | Item | Para que serve |
 | --- | --- |
@@ -191,8 +191,8 @@ Os componentes usam **PascalCase** (`Botao.jsx`, `TabelaTarefas.jsx`) e os hooks
 
 São duas etapas separadas, cada uma com seu middleware:
 
-1. **Autenticação (quem é você?)** — [`autenticar.js`](backend-api/src/compartilhado/middlewares/autenticar.js). Valida o JWT do cabeçalho `Authorization: Bearer ...` e carrega o usuário. Falhou = **401**.
-2. **Autorização (o que você pode fazer?)** — [`autorizar.js`](backend-api/src/compartilhado/middlewares/autorizar.js). Confere se o perfil tem a permissão que a rota exige, por exemplo `autorizar("analise:ler")`. Falhou = **403**.
+1. **Autenticação (quem é você?)** — [`authenticate.js`](backend-api/src/shared/middlewares/authenticate.js). Valida o JWT do cabeçalho `Authorization: Bearer ...` e carrega o usuário. Falhou = **401**.
+2. **Autorização (o que você pode fazer?)** — [`authorize.js`](backend-api/src/shared/middlewares/authorize.js). Confere se o perfil tem a permissão que a rota exige, por exemplo `autorizar("analise:ler")`. Falhou = **403**.
 
 Detalhes do login:
 
@@ -203,7 +203,7 @@ Detalhes do login:
 
 ## Módulos do backend
 
-Cada pasta em `backend-api/src/modulos/` segue o mesmo padrão em três camadas, cada uma com uma responsabilidade:
+Cada pasta em `backend-api/src/modules/` segue o mesmo padrão em três camadas, cada uma com uma responsabilidade:
 
 | Arquivo | Camada | Responsabilidade |
 | --- | --- | --- |
@@ -247,7 +247,7 @@ Se a descrição da conta (sem acento e em maiúsculas) contiver uma das palavra
 | Veículo | VEICULO, ESTACIONAMENTO |
 | Assinaturas | ASSINATURA |
 
-As regras ficam em [classificador.js](backend-api/src/modulos/tratamento/classificador.js). Outras categorias disponíveis para escolha manual: *Outros* e *Sem categoria*.
+As regras ficam em [classifier.js](backend-api/src/modules/treatment/classifier.js). Outras categorias disponíveis para escolha manual: *Outros* e *Sem categoria*.
 
 ## Diagramas
 

@@ -1,7 +1,7 @@
 // Ponto de entrada:  npm run dev  (ou npm start)
 import { env } from "./config/env.js";
 import { criarApp } from "./app.js";
-import { pool } from "./compartilhado/db.js";
+import { pool } from "./shared/db.js";
 
 // Sobe o servidor HTTP na porta configurada em env/.env
 const servidor = criarApp().listen(env.porta, () => {

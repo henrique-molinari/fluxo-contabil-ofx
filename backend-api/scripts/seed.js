@@ -9,9 +9,9 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import bcrypt from "bcryptjs";
 import { env } from "../src/config/env.js";
-import { pool } from "../src/compartilhado/db.js";
-import { lerOfx } from "../src/modulos/importacao/ofx.parser.js";
-import { importacaoRepositorio } from "../src/modulos/importacao/importacao.repositorio.js";
+import { pool } from "../src/shared/db.js";
+import { lerOfx } from "../src/modules/import/ofx.parser.js";
+import { importacaoRepositorio } from "../src/modules/import/import.repository.js";
 
 if (env.producao) {
   console.error("Seed bloqueado em produção: ele cria usuários com senha conhecida.");

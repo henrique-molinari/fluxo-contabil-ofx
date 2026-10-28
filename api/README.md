@@ -23,7 +23,7 @@ api/
 
 ## Rotas
 
-Legenda: 🔓 pública · 🔑 só precisa estar logado · demais exigem a permissão indicada (veja os perfis em [`permissoes.js`](../backend-api/src/config/permissoes.js)).
+Legenda: 🔓 pública · 🔑 só precisa estar logado · demais exigem a permissão indicada (veja os perfis em [`permissions.js`](../backend-api/src/config/permissions.js)).
 
 ### Auth
 | Método | Rota | Acesso |
