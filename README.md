@@ -84,16 +84,16 @@ fluxo-contabil/
 │   └── src/
 │       ├── app.js, server.js
 │       ├── config/           #   env.js e permissions.js
-│       ├── shared/    #   db, erros e middlewares (autenticar, autorizar, validar)
+│       ├── shared/           #   db, errors e middlewares (authenticate, authorize, validate)
 │       └── modules/          #   uma pasta por módulo
 │           ├── auth/         #     login, refresh, logout, trocar senha
-│           ├── usuarios/     #     cadastro da equipe (gestor)
-│           ├── importacao/   #     leitor de OFX + prévia + importação
-│           ├── tratamento/   #     contas, categorias e classificação
-│           ├── comentarios/  #     comentários do analista
-│           ├── analise/      #     totais e gráficos
-│           ├── exportacao/   #     csv, xlsx, txt, ofx
-│           └── tarefas/      #     tarefas delegadas pelo gestor
+│           ├── users/        #     cadastro da equipe (gestor)
+│           ├── import/       #     leitor de OFX + prévia + importação
+│           ├── treatment/    #     contas, categorias e classificação
+│           ├── comments/     #     comentários do analista
+│           ├── analysis/     #     totais e gráficos
+│           ├── export/       #     csv, xlsx, txt, ofx
+│           └── tasks/        #     tarefas delegadas pelo gestor
 ├── api/                      # Documentação e testes da API
 │   ├── insomnia/             #   coleção do Insomnia (78 requisições + testes)
 │   ├── examples/             #   extratos .ofx para testar a importação
@@ -103,9 +103,9 @@ fluxo-contabil/
 │   └── .env.example          #   modelo (o .env de verdade não vai para o Git)
 └── frontend/                 # React 18 + Vite
     └── src/
-        ├── App.jsx, Sistema.jsx, MenuLateral.jsx   #   login x sistema, layout e menu filtrado pelas permissões
-        ├── registroModulos.js  #   lista dos módulos (e a permissão de cada um)
-        ├── shared/    #   componentes reutilizáveis (Botao, Campo, Tabela, Painel...), hooks (useRequisicao, useFormulario...) e http.js
+        ├── App.jsx, System.jsx, SideMenu.jsx   #   login x sistema, layout e menu filtrado pelas permissões
+        ├── moduleRegistry.js #   lista dos módulos (e a permissão de cada um)
+        ├── shared/           #   componentes reutilizáveis (Button, Field, Table, Panel...), hooks (useRequest, useForm...) e http.js
         └── modules/          #   uma pasta por módulo (mesmos nomes do backend)
 ```
 
@@ -176,16 +176,16 @@ Abra `http://localhost:5173`. Usuários criados pelo `db:seed` (senha `Mudar@123
 
 ## Componentes e hooks do frontend
 
-Os componentes usam **PascalCase** (`Botao.jsx`, `TabelaTarefas.jsx`) e os hooks começam com `use` (`useRequisicao.js`). Cada módulo é dividido em componentes pequenos, e o que se repete fica em `frontend/src/shared/`:
+Os nomes de arquivos são em inglês. Os componentes usam **PascalCase** (`Button.jsx`, `TaskTable.jsx`) e os hooks começam com `use` (`useRequest.js`). Dentro do código, variáveis, funções e componentes seguem em português (ex.: o arquivo `Button.jsx` exporta o componente `Botao`). Cada módulo é dividido em componentes pequenos, e o que se repete fica em `frontend/src/shared/`:
 
 | Item | Para que serve |
 | --- | --- |
-| `Alerta`, `Botao`, `Campo`, `Selo` | peças básicas (aviso, botão com spinner, rótulo + campo, etiqueta) |
-| `Painel`, `EstadoVazio`, `Modal` | blocos de layout (cartão com cabeçalho, tela vazia, janela lateral) |
-| `Tabela` | tabela genérica: a tela só descreve as colunas |
-| `useRequisicao` | busca dados na API ao abrir a tela (carregando, erro, recarregar) |
-| `useFormulario` | formulário que abre e fecha, liga os campos e trata o envio |
-| `useMensagem`, `usePreferencia`, `useHashRota` | aviso de sucesso/erro, escolha salva no navegador e navegação pela URL (`#tarefas`) |
+| `Alert.jsx`, `Button.jsx`, `Field.jsx`, `Badge.jsx` | peças básicas (aviso, botão com spinner, rótulo + campo, etiqueta) |
+| `Panel.jsx`, `EmptyState.jsx`, `Modal.jsx` | blocos de layout (cartão com cabeçalho, tela vazia, janela lateral) |
+| `Table.jsx` | tabela genérica: a tela só descreve as colunas |
+| `useRequest.js` | busca dados na API ao abrir a tela (carregando, erro, recarregar) |
+| `useForm.js` | formulário que abre e fecha, liga os campos e trata o envio |
+| `useMessage.js`, `usePreference.js`, `useHashRoute.js` | aviso de sucesso/erro, escolha salva no navegador e navegação pela URL (`#tarefas`) |
 
 ## Autenticação e autorização
 
@@ -207,9 +207,9 @@ Cada pasta em `backend-api/src/modules/` segue o mesmo padrão em três camadas,
 
 | Arquivo | Camada | Responsabilidade |
 | --- | --- | --- |
-| `<modulo>.rotas.js` | HTTP | valida a entrada (zod), confere a permissão e devolve a resposta; não tem regra de negócio nem SQL |
-| `<modulo>.servico.js` | Regras de negócio | classe que decide o que pode ou não acontecer (ex.: só o dono da tarefa a atualiza); não conhece Express nem SQL |
-| `<modulo>.repositorio.js` | Dados | classe que escreve todo o SQL do módulo |
+| `<module>.routes.js` | HTTP | valida a entrada (zod), confere a permissão e devolve a resposta; não tem regra de negócio nem SQL |
+| `<module>.service.js` | Regras de negócio | classe que decide o que pode ou não acontecer (ex.: só o dono da tarefa a atualiza); não conhece Express nem SQL |
+| `<module>.repository.js` | Dados | classe que escreve todo o SQL do módulo |
 
 Os serviços recebem o repositório pelo construtor (injeção de dependência), por isso os testes conseguem trocá-lo por um falso. Para criar um módulo novo: crie a pasta com essas três camadas, exporte um `Router` e registre-o em [app.js](backend-api/src/app.js).
 
