@@ -1,3 +1,5 @@
+// Chamadas da API de importação de extratos OFX (prévia e importação de verdade).
+// Cada função só monta a URL e o corpo; o token e os erros são tratados em compartilhado/http.js.
 import { chamar } from "../../compartilhado/http.js";
 
 // Monta o FormData com o arquivo (é assim que se envia upload)
