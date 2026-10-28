@@ -1,6 +1,6 @@
 # database
 
-Scripts SQL do PostgreSQL. Ficam em `migrations/`, numerados na ordem em que devem rodar.
+Scripts SQL do PostgreSQL. Ficam em `migrations/`, numerados na ordem em que devem rodar. As tabelas são criadas por estes scripts; o backend as lê e grava pelos models do Sequelize (`backend-api/src/shared/models/`), então ao mudar uma tabela atualize também o model correspondente.
 
 | Arquivo | O que cria |
 | --- | --- |

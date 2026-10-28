@@ -24,28 +24,3 @@ export const sequelize = new Sequelize(env.banco.database, env.banco.user, env.b
   // ssl é sempre informado (false quando não se exige SSL), senão o driver tentaria usar o PGSSLMODE do ambiente
   dialectOptions: { ssl: env.banco.ssl },
 });
-
-// --- Camada antiga (SQL direto), mantida só até todos os repositórios migrarem para os models ---
-
-// Pool: reaproveita até 10 conexões em vez de abrir uma por requisição
-export const pool = new pg.Pool({ ...env.banco, max: 10 });
-
-// Atalho para uma consulta simples: consultar(sql, [parametros])
-// Sempre use $1, $2... (nunca concatene texto) para evitar SQL injection.
-export const consultar = (sql, params) => pool.query(sql, params);
-
-// Executa várias queries numa transação (tudo grava ou nada grava)
-export async function transacao(fn) {
-  const cliente = await pool.connect();
-  try {
-    await cliente.query("BEGIN");
-    const resultado = await fn(cliente);
-    await cliente.query("COMMIT");
-    return resultado;
-  } catch (e) {
-    await cliente.query("ROLLBACK");
-    throw e;
-  } finally {
-    cliente.release();
-  }
-}

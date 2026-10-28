@@ -13,7 +13,8 @@ process.env.JWT_SEGREDO ??= "segredo-so-para-testes-de-integracao";
 
 const seguro = (process.env.PGDATABASE || "").endsWith("_teste");
 const { criarApp } = await import("../src/app.js");
-const { pool } = await import("../src/shared/db.js");
+const { sequelize } = await import("../src/shared/db.js");
+const { Movimentacao, Tarefa, Usuario } = await import("../src/shared/models/index.js");
 const bcrypt = (await import("bcryptjs")).default;
 
 const exemplos = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../api/examples");
@@ -52,20 +53,20 @@ before(async () => {
   base = `http://127.0.0.1:${servidor.address().port}/api`;
   const hash = await bcrypt.hash(SENHA, 4);
   for (const [nome, c] of Object.entries(contas)) {
-    const { rows } = await pool.query(
+    const [rows] = await sequelize.query(
       `INSERT INTO usuarios (nome, email, senha_hash, perfil) VALUES ($1, $2, $3, $4)
        ON CONFLICT (lower(email)) DO UPDATE SET senha_hash = $3, perfil = $4, ativo = true RETURNING id`,
-      [`Teste ${nome}`, c.email, hash, c.perfil]
+      { bind: [`Teste ${nome}`, c.email, hash, c.perfil] }
     );
     c.id = rows[0].id;
   }
-  await pool.query("DELETE FROM movimentacoes");
-  await pool.query("DELETE FROM tarefas");
+  await Movimentacao.destroy({ where: {} });
+  await Tarefa.destroy({ where: {} });
 });
 
 after(async () => {
   servidor?.close();
-  await pool.end();
+  await sequelize.close();
 });
 
 const t = (nome, fn) => test(nome, { skip: seguro ? false : "defina PGDATABASE=algo_teste para rodar" }, fn);
@@ -243,7 +244,7 @@ t("tarefas: gestor delega, dono atualiza, outro perfil não mexe", async () => {
 t("usuários: só o gestor gerencia; desativar derruba o acesso na hora", async () => {
   assert.equal((await chamar("analista", "GET", "/usuarios")).status, 403);
   const email = "t.novo@teste.com";
-  await pool.query("DELETE FROM usuarios WHERE email = $1", [email]);
+  await Usuario.destroy({ where: { email } });
 
   const novo = await chamar("gestor", "POST", "/usuarios", { nome: "Novo", email, senha: "Senha@1234", perfil: "ESTAGIARIO" });
   assert.equal(novo.status, 201);
@@ -261,7 +262,7 @@ t("usuários: só o gestor gerencia; desativar derruba o acesso na hora", async 
 
   // gestor não pode se desativar
   assert.equal((await chamar("gestor", "PATCH", `/usuarios/${contas.gestor.id}`, { ativo: false })).status, 400);
-  await pool.query("DELETE FROM usuarios WHERE email = $1", [email]);
+  await Usuario.destroy({ where: { email } });
 });
 
 t("rota inexistente devolve 404 em JSON", async () => {

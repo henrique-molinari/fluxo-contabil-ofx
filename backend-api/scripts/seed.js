@@ -3,15 +3,20 @@
 //   - as movimentações do extrato api/examples/statement_complete.ofx (já classificadas);
 //   - alguns comentários do analista e tarefas delegadas pelo gestor.
 //   npm run db:seed        (senha vem de SEED_SENHA em env/.env)
-// É seguro rodar várias vezes: nada é duplicado.
+// É seguro rodar várias vezes: nada é duplicado. Tudo é gravado pelos models do Sequelize.
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import bcrypt from "bcryptjs";
+import { Op } from "sequelize";
 import { env } from "../src/config/env.js";
-import { pool } from "../src/shared/db.js";
+import { sequelize } from "../src/shared/db.js";
+import { Comentario, Movimentacao, Tarefa } from "../src/shared/models/index.js";
+import { authRepositorio } from "../src/modules/auth/auth.repository.js";
+import { usuariosRepositorio } from "../src/modules/users/users.repository.js";
 import { lerOfx } from "../src/modules/import/ofx.parser.js";
 import { importacaoRepositorio } from "../src/modules/import/import.repository.js";
+import { tarefasRepositorio } from "../src/modules/tasks/tasks.repository.js";
 
 if (env.producao) {
   console.error("Seed bloqueado em produção: ele cria usuários com senha conhecida.");
@@ -21,7 +26,7 @@ if (env.producao) {
 // Extrato de exemplo que acompanha o projeto
 const extrato = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../api/examples/statement_complete.ofx");
 
-// ON CONFLICT DO NOTHING (abaixo) faz o seed ser seguro de rodar várias vezes
+// Quem já existe não é alterado, por isso o seed é seguro de rodar várias vezes
 const USUARIOS = [
   { nome: "Ana Analista", email: "analista@ofx.com", perfil: "ANALISTA" },
   { nome: "Enzo Estagiário", email: "estagiario@ofx.com", perfil: "ESTAGIARIO" },
@@ -30,21 +35,18 @@ const USUARIOS = [
 
 // Cria os usuários de exemplo; quem já existe não é alterado
 async function semearUsuarios() {
-  const hash = await bcrypt.hash(env.seedSenha, 10);
+  const senhaHash = await bcrypt.hash(env.seedSenha, 10);
   for (const u of USUARIOS) {
-    const { rowCount } = await pool.query(
-      "INSERT INTO usuarios (nome, email, senha_hash, perfil) VALUES ($1, $2, $3, $4) ON CONFLICT DO NOTHING",
-      [u.nome, u.email, hash, u.perfil]
-    );
-    console.log(`${rowCount ? "✔ criado " : "• já existe"}  ${u.email}  (${u.perfil})`);
+    const existente = await authRepositorio.buscarUsuarioPorEmail(u.email);
+    if (!existente) await usuariosRepositorio.criar({ ...u, senhaHash });
+    console.log(`${existente ? "• já existe" : "✔ criado "}  ${u.email}  (${u.perfil})`);
   }
   console.log(`Senha dos usuários novos: ${env.seedSenha}`);
 }
 
 // Devolve o id de um usuário de exemplo pelo e-mail
 async function idDoUsuario(email) {
-  const { rows } = await pool.query("SELECT id FROM usuarios WHERE lower(email) = lower($1)", [email]);
-  return rows[0]?.id;
+  return (await authRepositorio.buscarUsuarioPorEmail(email))?.id;
 }
 
 // Importa o extrato de exemplo (as duplicadas são puladas pelo índice único)
@@ -56,38 +58,34 @@ async function semearMovimentacoes(analistaId) {
 
 // Cria comentários de exemplo, só se a tabela estiver vazia
 async function semearComentarios(analistaId) {
-  const { rows: existentes } = await pool.query("SELECT 1 FROM comentarios LIMIT 1");
-  if (existentes.length) return console.log("• comentários: já existem, nada a fazer");
+  if ((await Comentario.count()) > 0) return console.log("• comentários: já existem, nada a fazer");
 
   // Comenta as duas contas mais recentes que já têm categoria
-  const { rows: contas } = await pool.query(
-    "SELECT id FROM movimentacoes WHERE categoria <> 'Sem categoria' ORDER BY data_movimentacao DESC, id DESC LIMIT 2"
-  );
+  const contas = await Movimentacao.findAll({
+    attributes: ["id"],
+    where: { categoria: { [Op.ne]: "Sem categoria" } },
+    order: [["data_movimentacao", "DESC"], ["id", "DESC"]],
+    limit: 2,
+    raw: true,
+  });
   const textos = ["Conferido com o comprovante do banco.", "Verificar se o valor mudou em relação ao mês anterior."];
   for (const [i, conta] of contas.entries()) {
-    await pool.query(
-      "INSERT INTO comentarios (movimentacao_id, usuario_id, texto) VALUES ($1, $2, $3)",
-      [conta.id, analistaId, textos[i]]
-    );
+    await Comentario.create({ movimentacao_id: conta.id, usuario_id: analistaId, texto: textos[i] });
   }
   console.log(`✔ comentários: ${contas.length} criados`);
 }
 
 // Cria tarefas de exemplo delegadas pelo gestor, só se a tabela estiver vazia
 async function semearTarefas(gestorId, analistaId, estagiarioId) {
-  const { rows: existentes } = await pool.query("SELECT 1 FROM tarefas LIMIT 1");
-  if (existentes.length) return console.log("• tarefas: já existem, nada a fazer");
+  if ((await Tarefa.count()) > 0) return console.log("• tarefas: já existem, nada a fazer");
 
+  // Prazo de uma semana a partir de hoje, no formato AAAA-MM-DD
+  const prazo = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
   const tarefas = [
-    ["Preciso do balanço do mês", "Fechar o balanço com as contas já classificadas.", "BALANCO", analistaId],
-    ["Importar o extrato da conta poupança", "Enviar o OFX mais recente pelo módulo Importação.", "GERAL", estagiarioId],
+    { titulo: "Preciso do balanço do mês", descricao: "Fechar o balanço com as contas já classificadas.", tipo: "BALANCO", atribuido_a: analistaId },
+    { titulo: "Importar o extrato da conta poupança", descricao: "Enviar o OFX mais recente pelo módulo Importação.", tipo: "GERAL", atribuido_a: estagiarioId },
   ];
-  for (const [titulo, descricao, tipo, atribuidoA] of tarefas) {
-    await pool.query(
-      "INSERT INTO tarefas (titulo, descricao, tipo, atribuido_a, criado_por, prazo) VALUES ($1, $2, $3, $4, $5, current_date + 7)",
-      [titulo, descricao, tipo, atribuidoA, gestorId]
-    );
-  }
+  for (const tarefa of tarefas) await tarefasRepositorio.criar({ ...tarefa, prazo }, gestorId);
   console.log(`✔ tarefas: ${tarefas.length} criadas`);
 }
 
@@ -101,5 +99,5 @@ try {
   console.error(e.message);
   process.exitCode = 1;
 } finally {
-  await pool.end();
+  await sequelize.close();
 }

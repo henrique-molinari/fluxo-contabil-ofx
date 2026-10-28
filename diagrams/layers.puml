@@ -24,7 +24,7 @@ class "Serviço" as Servico #E5F6EF {
   apagar()
 }
 
-' Camada de dados: todo o SQL do módulo
+' Camada de dados: acesso ao banco pelos models do Sequelize
 class "Repositório" as Repositorio #FFF4D6 {
   consultar()
   inserir()
@@ -36,7 +36,8 @@ database "PostgreSQL" as Banco
 
 Rotas --> Servico : chama
 Servico --> Repositorio : recebe pelo construtor\n(injeção de dependência)
-Repositorio --> Banco : SQL parametrizado
+Repositorio --> Banco : models do Sequelize
+(ORM, consultas parametrizadas)
 
 note bottom of Servico
   Módulos: tratamento, importacao, comentarios,

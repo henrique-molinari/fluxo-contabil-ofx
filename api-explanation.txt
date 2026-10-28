@@ -7,7 +7,7 @@ O QUE É
 A API é o "cérebro" de um mini ERP financeiro. Ela recebe extratos bancários
 no formato OFX (o arquivo que o banco gera), guarda as movimentações em um
 banco PostgreSQL e permite classificar, comentar, analisar e exportar esses
-dados. Foi feita em Node.js com Express.
+dados. Foi feita em Node.js com Express e acessa o banco pelo ORM Sequelize.
 
 A IDEIA
 -------

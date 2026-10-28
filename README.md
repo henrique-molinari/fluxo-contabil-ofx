@@ -7,6 +7,7 @@
 ![Node.js](https://img.shields.io/badge/Node.js-20+-339933?logo=node.js&logoColor=white)
 ![Express](https://img.shields.io/badge/Express-4-000000?logo=express&logoColor=white)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?logo=postgresql&logoColor=white)
+![Sequelize](https://img.shields.io/badge/Sequelize-6-52B0E7?logo=sequelize&logoColor=white)
 ![React](https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=black)
 ![Vite](https://img.shields.io/badge/Vite-5-646CFF?logo=vite&logoColor=white)
 ![JWT](https://img.shields.io/badge/Auth-JWT%20%2B%20Refresh-orange)
@@ -30,8 +31,8 @@
 
 | Camada | Tecnologias |
 | --- | --- |
-| Backend | Node.js 20, Express 4, `pg`, `zod`, `jsonwebtoken`, `bcryptjs`, `multer`, `exceljs`, `helmet`, `cors`, `express-rate-limit` |
-| Banco | PostgreSQL (migrações SQL numeradas) |
+| Backend | Node.js 20, Express 4, `sequelize` (ORM), `pg`, `zod`, `jsonwebtoken`, `bcryptjs`, `multer`, `exceljs`, `helmet`, `cors`, `express-rate-limit` |
+| Banco | PostgreSQL, acessado pelo ORM Sequelize (models em `backend-api/src/shared/models/`) e migrações SQL numeradas |
 | Frontend | React 18, Vite 5, Recharts, Lucide Icons |
 | Testes | `node:test` (unitários e integração) e coleção do Insomnia com 78 testes |
 | Documentação | Diagramas PlantUML (classes e DER) |
@@ -84,7 +85,7 @@ fluxo-contabil/
 │   └── src/
 │       ├── app.js, server.js
 │       ├── config/           #   env.js e permissions.js
-│       ├── shared/           #   db, errors e middlewares (authenticate, authorize, validate)
+│       ├── shared/           #   db (Sequelize), models, errors e middlewares (authenticate, authorize, validate)
 │       └── modules/          #   uma pasta por módulo
 │           ├── auth/         #     login, refresh, logout, trocar senha
 │           ├── users/        #     cadastro da equipe (gestor)
@@ -209,7 +210,7 @@ Cada pasta em `backend-api/src/modules/` segue o mesmo padrão em três camadas,
 | --- | --- | --- |
 | `<module>.routes.js` | HTTP | valida a entrada (zod), confere a permissão e devolve a resposta; não tem regra de negócio nem SQL |
 | `<module>.service.js` | Regras de negócio | classe que decide o que pode ou não acontecer (ex.: só o dono da tarefa a atualiza); não conhece Express nem SQL |
-| `<module>.repository.js` | Dados | classe que escreve todo o SQL do módulo |
+| `<module>.repository.js` | Dados | classe que fala com o banco através dos models do Sequelize (`Usuario`, `Movimentacao`, `Comentario`, `Tarefa`, `RefreshToken`) |
 
 Os serviços recebem o repositório pelo construtor (injeção de dependência), por isso os testes conseguem trocá-lo por um falso. Para criar um módulo novo: crie a pasta com essas três camadas, exporte um `Router` e registre-o em [app.js](backend-api/src/app.js).
 
