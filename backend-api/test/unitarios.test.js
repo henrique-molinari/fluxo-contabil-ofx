@@ -9,7 +9,7 @@ process.env.JWT_SEGREDO ??= "segredo-so-para-testes-unitarios";
 
 const { lerOfx } = await import("../src/modulos/importacao/ofx.parser.js");
 const { classificar } = await import("../src/modulos/tratamento/classificador.js");
-const { calcularResumo } = await import("../src/modulos/analise/analise.rotas.js");
+const { calcularResumo } = await import("../src/modulos/analise/analise.servico.js");
 const { temPermissao, PERMISSOES, PERFIS } = await import("../src/config/permissoes.js");
 
 const exemplos = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../api/exemplos");
